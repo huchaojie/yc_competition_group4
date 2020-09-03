@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单管理</title>
+<link rel="stylesheet" type="text/css"
+	href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="easyui/datagrid-detailview.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript">
+function query() {
+	$('#dg').datagrid('load',{
+		uname:$("#uname").textbox('getValue'),
+		name:$("#name").textbox('getValue'),
+		oids:$("#oids").textbox('getValue'),
+		phone:$("#phone").textbox('getValue'),
+		time:$("#cc").textbox('getValue'),
+		statu:$("#dd").textbox('getValue')
+	});
+}
+function fmtfh(value,row,index) {
+	if(row.statu==1){
+		return "<button onclick='edit("+index+")'>去发货</button>"
+	}	
+}
+function fmtime(value,row,index) {
+	
+		return fmtdate(new Date(value*1000));
+		
+}
+function fmtdate(date){
+	var y = date.getFullYear();
+	var m = date.getMonth()+1;
+	var d = date.getDate();
+	return y+'-'+m+'-'+d;
+}
+function fmtsx(value,row,index) {
+	//alert(row.area)
+	
+	if(row.cityCode){
+		
+		for (var city of vue.citys) {
+			if(row.cityCode==city.citycode){
+				return "";
+			}
+		}
+		return "<button onclick='shexian("+row.cityCode+")' >设为限制地区</button>"
+	}
+	
+}
+function fmtqx(value,row,index) {
+	//alert(row.area)
+	
+	if(row.cityCode){
+		for (var city of vue.citys) {
+			if(row.cityCode==city.citycode){
+				return "<button onclick='qxsx("+row.cityCode+")' >取消设限</button>"
+			}
+		}
+		
+	}
+	
+}
+function shexian(cityCode) {
+	$('#lx').form('submit',{
+		url : "YqServlet.do",
+		onSubmit:function(param){
+			param.op="shexian";
+			param.co=cityCode;
+		},
+		success : res=>{
+			alert(res);
+			$('#dg').datagrid('reload');
+		}
+	});
+	
+	
+}
+function qxsx(cityCode) {
+	$('#lx').form('submit',{
+		url : "YqServlet.do",
+		onSubmit:function(param){
+			param.op="qxsx";
+			param.co=cityCode;
+		},
+		success : res=>{
+			alert(res);
+			$('#dg').datagrid('reload');
+			
+		}
+	});
+	
+	
+}
+function edit(index) {
+	var rows = $('#dg').datagrid("getRows");
+	$('#bj').dialog('open');
+	$('#ff').form('load',rows[index]);
+}
+
+function dele(index) {
+	
+	var rows = $('#dg').datagrid("getRows");
+	$('#bj').dialog('open');
+	$('#ff').form('load',rows[index]);
+}
+
+
+</script>
+</head>
+<body >
+<div  class="easyui-layout" data-options="fit:true">
+		
+		
+			<table class="easyui-datagrid" id="dg"
+				data-options="
+				method:'get',
+				border:false,
+				singleSelect:true,
+				fit:true,
+				fitColumns:true,
+				pagination:true,toolbar:'#tb'"
+				>
+				
+				 
+			</table>
+		
+		<div id="tb" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px;height: 30px" id="total" >
+			
+			<form style="display: inline-block;" >
+				<label for="email">数据来源:百度疫情实时大数据报告</label>
+				
+				
+			</form>
+		</div>
+		
+		
+	</div>
+	<div id="sx" class="easyui-dialog" title="删除界面" style="width:250px;height:150px;"
+        data-options="
+        iconCls:'icon-save',
+        resizable:true,
+        modal:true,
+        closed:true,
+        buttons:'#bbb'"title="是否将该城市设为限制城市">
+        <form id="sxaa">
+       
+        <input class="easyui-textbox"name="cityCode"label="cityCode" readonly="true"><br>
+        </form>
+   	</div>
+	<div id="bbb">
+		<a href="#" class="easyui-linkbutton" onclick="shexian()">是</a>
+		<a href="#" class="easyui-linkbutton">否</a>
+	</div>
+	<div id="qxsx" class="easyui-dialog" title="删除界面" style="width:250px;height:150px;"
+        data-options="
+        iconCls:'icon-save',
+        resizable:true,
+        modal:true,
+        closed:true,
+        buttons:'#bbb'"title="是否取消该城市为限制城市">
+        <form id="qxsxaa">
+        
+        <input class="easyui-textbox"name="cityCode"label="cityCode" readonly="true"><br>
+        </form>
+        <form id="lx" style="display: none;"></form>
+   	</div>
+	<div id="bb">
+		<a href="#" class="easyui-linkbutton" onclick="qxsx()">是</a>
+		<a href="#" class="easyui-linkbutton">否</a>
+	</div>
+</div>
+<script type="text/javascript">
+var vue  = new Vue({
+	el:"#dg",
+	data:{
+		citys:[]
+	},methods:{
+		getcity(){
+			axios({
+				url:"YqServlet.do",
+				params:{
+					op:"getcity"
+				}
+			}).then((res)=>{
+				this.citys=res.data.yq;
+				console.info(this.citys);
+			});
+		}
+	}
+});
+		$('#dg').datagrid({
+
+		    url:'YqServlet.do?op=query',
+		    width:500,
+		    height:250,
+		    singleSelect:true,
+		    nowrap:false,
+		    fitColumns:true,
+		    sortName:'confirmedRelative',		// 排序的字段
+		   	sortOrder:'desc',
+			remoteSort:false,
+		    columns:[[
+		    	{field:'area',title:'地区',width:50},
+		    	{field:'cityCode',title:'城市编码',width:50},
+		        {field:'confirmedRelative',title:'新增',width:100},
+		        {field:'curConfirm',title:'现有',width:50,sortable:true},
+		        {field:'confirmed',title:'累计',width:60,align:'center'},
+		        {field:'crued',title:'治愈',width:60,align:'center'},
+		        {field:'died',title:'死亡',width:80,align:'center'},
+		        
+		        {field:'relativeTime',title:'刷新时间',width:70,align:'center',formatter:fmtime},
+		        
+		        {field:'asd',title:'操作',width:50,align:'center',formatter:fmtqx},
+		        
+		        {field:'axd',title:'操作',width:60,align:'center',formatter:fmtsx}
+		    ]],
+		    onBeforeLoad:function(){
+		    	vue.getcity();
+		    },
+		    onLoadSuccess:function(data){
+		    	 
+		    	
+		    	
+		    	
+		    },
+		    view: detailview,
+		    detailFormatter: function(rowIndex, rowData){
+		        return  '<div style="padding:2px"><table id="ddv-' + rowIndex + '"></table></div>';
+		    },
+		    onExpandRow:function(index,row){//注意3
+		        $('#ddv-'+index).datagrid({
+		            url:'YqServlet.do?op=subList&area='+row.area,
+		            fitColumns:true,
+		            singleSelect:true,
+		            height:'auto',
+		            columns:[[
+		            	{field:'city',title:'城市',width:100},
+		            	{field:'cityCode',title:'城市编码',width:50},
+		            	{field:'confirmedRelative',title:'新增',width:100},
+				        {field:'curConfirm',title:'现有',width:50},
+				        {field:'confirmed',title:'累计',width:60,align:'center',sortable:true},
+				        {field:'crued',title:'治愈',width:60,align:'center'},
+				        {field:'died',title:'死亡',width:80,align:'center'},
+				        {field:'asd',title:'操作',width:50,align:'center',formatter:fmtqx},
+				        
+				        {field:'axd',title:'操作',width:60,align:'center',formatter:fmtsx}
+		                
+		            ]],
+				    onResize:function(){
+		                $('#dg').datagrid('fixDetailRowHeight',index);
+		            },onLoadSuccess:function(){
+		            	$('#dg').datagrid('fixDetailRowHeight',index);
+                    }
+		            
+		        });
+		        
+		    }
+		});
+		
+    	
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>最家</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+			<script type="text/javascript"src="js/jquery-1.12.4.min.js"></script>
+			<script type="text/javascript"src="js/jquery.flexslider-min.js"></script>
+		<script type="text/javascript"src="js/axios.min.js"></script>
+		<script type="text/javascript"src="js/vue.min.js"></script>
+		<script type="text/javascript"src="js/nav.js"></script>
+		<script type="text/javascript"src="js/public.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+	
+	</head>
+	<body>
+		<!------------------------------head------------------------------>
+		<div id="app">
+		<div class="head">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<span v-if="loginedUser != ''" style="font-size: 14px">欢迎{{loginedUser.uname}}</span>
+							<span v-else><a href="login.html" id="login">登录</a></span> <a
+								href="reg.html" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input v-model="sname" type="text" placeholder="热门搜索：干花花瓶" />
+							<input @click="goto1()" type="button" />
+						</form>
+						 <div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					var vue4=new Vue({
+						el:"#top",
+						data:{
+							sname:"",
+							loginedUser : {}
+						},created:function(){
+							var url = "LoginfileServlet?op=GetLoginedUser";
+							$.post(url,null,function(data){
+								if(data != "null"){
+									vue4.$data.loginedUser = JSON.parse(data);
+								//console.info(vue1.$data.loginedUser);
+								}else{
+									vue4.$data.loginedUser = "";
+								}
+							});
+						},
+						methods:{
+							goto1(){
+								sname=this.sname;
+								location.href="search.html?"+sname;
+							}
+						}
+					});
+				</script>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+					<li><a href="fight.html">抗疫专区</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-------------------------banner--------------------------->
+		<div class="block_home_slider">
+			<div id="home_slider" class="flexslider">
+				<ul class="slides">
+					<li>
+						<div class="slide">
+							<img src="img/banner2.jpg"/>
+						</div>
+					</li>
+					<li>
+						<div class="slide">
+							<img src="img/banner1.jpg"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<!------------------------------thImg------------------------------>
+		<div class="thImg">
+			<div class="clearfix">
+				<a href="vase_proList.html"><img src="img/i1.jpg"/></a>
+				<a href="proList.html"><img src="img/i2.jpg"/></a>
+				<a href="decoration.html"><img src="img/i3.jpg"/></a>
+			</div>
+		</div>
+		
+		<!------------------------------news------------------------------>
+		<div class="news">
+			<div class="wrapper">
+				<h2><img src="img/ih1.jpg"/></h2>
+				<div id="person" class="flower clearfix tran" >
+					<a :href="'proDetail.html#'+p.sid" class="clearfix" v-for="(p,index) in productList">
+						<dl>
+							<dt>
+								<span class="abl"></span>
+								<img :src="p.image"/>
+								<span class="abr"></span>
+							</dt>
+							<dd>{{p.sname}}</dd>
+							<dd><span>¥ {{p.price}}</span></dd>
+						</dl>	
+					</a>				
+				</div>
+			
+		<script type="text/javascript">
+			var vue3 = new Vue({
+				el:"#person",
+				data:{
+					productList:[]
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"7",
+							b:"0",
+							page:"1",
+							size:"3"
+						}
+					}).then((res)=>{
+						console.info(res.data.list);
+						this.productList=res.data.list;
+					});
+				}
+				
+			});
+		</script>
+				<h2><img src="img/ih2.jpg"/></h2>
+						
+				<div id="flower" class="flower clearfix tran" >
+					<a :href="'proDetail.html#'+p.sid" class="clearfix" v-for="(p,index) in productList">
+						<dl>
+							<dt>
+								<span class="abl"></span>
+								<img :src="p.image"/>
+								<span class="abr"></span>
+							</dt>
+							<dd>{{p.sname}}</dd>
+							<dd><span>¥ {{p.price}}</span></dd>
+						</dl>	
+					</a>				
+				</div>
+			
+		<script type="text/javascript">
+			var vue1 = new Vue({
+				el:"#flower",
+				data:{
+					productList:[]
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"5",
+							b:"0",
+							page:"2",
+							size:"3"
+						}
+					}).then((res)=>{
+						console.info(res.data.list);
+						this.productList=res.data.list;
+					});
+				}
+				
+			});
+		</script>
+				
+				
+				
+			</div>
+		</div>
+		
+		<!------------------------------ad------------------------------>
+		<a href="#" class="ad"><img src="img/ib1.jpg"/></a>
+		
+		<!------------------------------people------------------------------>
+		<div class="people">
+			<div class="wrapper">
+				<h2><img src="img/ih3.jpg"/></h2>
+				
+				
+				<div id="app2" class="pList clearfix tran">
+					<a :href="'proDetail.html#'+p.sid" v-for="p in productList1">
+					
+						<dl >
+							<dt>
+								<span class="abl"></span>
+								<img :src="p.image"/>
+								<span class="abr"></span>
+							</dt>
+							<dd>{{p.sname}}</dd>
+							<dd><span>¥ {{p.price}}</span></dd>
+						</dl>
+					</a>
+				</div>
+				
+			<script type="text/javascript">
+			var vue2 = new Vue({
+				el:"#app2",
+				data:{
+					productList1:[]
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"10",
+							b:"0",
+							page:"1",
+							size:"3"
+						}
+					}).then((res)=>{
+						console.info(res.data.list);
+						this.productList1=res.data.list;
+					});
+				}
+			});
+		</script>
+				
+			</div>
+		</div>
+		<!--返回顶部-->
+		
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		</div>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/nav.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.flexslider-min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#home_slider').flexslider({
+					animation: 'slide',
+					controlNav: true,
+					directionNav: true,
+					animationLoop: true,
+					slideshow: true,
+					slideshowSpeed:2000,
+					useCSS: false
+				});
+
+			});
+		</script>
+		
+		
+	</body>
+</html>

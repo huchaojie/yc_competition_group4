@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 字段映射 -->
+	<settings>
+			<setting name="mapUnderscoreToCamelCase" value="false"/>
+	</settings>
+	
+
+  <environments default="development">
+  		<!--开发环境  -->
+	    <environment id="development">
+	    <!-- 事务管理JDBC -->
+	      <transactionManager type="JDBC"/>
+	      <!--  type="POOLED" 数据类型连接池-->
+	      <dataSource type="POOLED">
+	        <property name="driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://127.0.0.1:3306/s2-plhy-jiaju"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="a"/>
+	      </dataSource>
+	    </environment>
+	    
+	    <!--  测试环境-->
+	    <environment id="test">
+	    <!-- 事务管理JDBC -->
+	      <transactionManager type="JDBC"/>
+	      <!--  type="POOLED" 数据类型连接池-->
+	      <dataSource type="POOLED">
+	        <property name="driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://127.0.0.1/s2-plhy-jiaju"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="a"/>
+	      </dataSource>
+	    </environment>
+	    
+	    <!-- 生产环境 -->
+	    <environment id="produce">
+	    <!-- 事务管理JDBC -->
+	      <transactionManager type="JDBC"/>
+	      <!--  type="POOLED" 数据类型连接池-->
+	      <dataSource type="POOLED">
+	        <property name="driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://127.0.0.1/s2-plhy-jiaju"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="a"/>
+	      </dataSource>
+	    </environment>
+  </environments>
+  
+  <!--  映射环境配置-->
+  <mappers>
+  	<!-- <mapper resource="com/yc/favorite/dao/FavoriteMapper.xml"/> -->
+    <!-- <package name="com.yc.favorite.dao"/>  -->
+	
+	<mapper class="com.yc.jiaju.dao.ProductMapper"/>
+	<mapper class="com.yc.jiaju.dao.YqMapper"/>
+	<mapper class="com.yc.jiaju.dao.AddrMapper"/>
+  </mappers>
+</configuration>

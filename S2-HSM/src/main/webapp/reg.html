@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		
+		
+		
+	</head>
+	<body>
+		<!-------------------reg-------------------------->
+		<div class="reg"  >
+			<form action="#" method="post" id="rrr">
+				<h1><a href="index.html"><img src="img/temp/logo.png"></a></h1>
+				<p>用户注册</p>
+				<p><input type="text" name="email" value="" placeholder="请输入邮箱" v-model="email"></p>
+				<p><input type="password" name="pass" value="" placeholder="请输入密码" v-model="pass"></p>
+				<p><input type="password" name="npass" value="" placeholder="请确认密码" v-model="npass"></p>
+				<p class="txtL txt"><input class="code" type="text" name="ver" value="" placeholder="验证码" v-model="ver"><button type="button" @click="sendEmail()" style="height: 40px;width: 100px;float: right;background-color: #c10000;color: #fff;">发送验证码</button> </p>
+				
+				<p><input type="button" name="reg" value="注册" @click="reg()"></p>
+				<p class="txtL txt">完成此注册，即表明您同意了我们的<a href="#"><使用条款和隐私策略></a></p>
+				<p class="txt"><a href="login.html">><span></span>已有账号登录</a></p>
+				<!--<a href="#" class="off"><img src="img/temp/off.png"></a>-->
+			</form>
+			
+		</div>
+		
+		<script type="text/javascript">
+			var vue = new Vue({
+				el : ".reg",
+				data : {
+					email : "",
+					pass : "",
+					npass : "",
+					ver : "",
+				},
+				methods : {
+					sendEmail(){
+						axios({
+							
+							url : "LoginfileServlet?op=Rsendemail",
+							params : {
+								email : this.email,
+								pass : this.pass,
+								npass : this.npass,
+								ver : this.ver
+							}
+						}).then((res) =>{
+							alert(res.data);
+						});
+					},
+					reg(){
+						axios({
+							url : "LoginfileServlet?op=Reg",
+							params : {
+								email : this.email,
+								pass : this.pass,
+								npass : this.npass,
+								ver : this.ver
+							}
+						}).then((res) =>{
+							alert(res.data);
+							if(res.data=="注册成功"){
+								location.href = "login.html";
+							}
+						});
+					}
+				},
+				
+			});
+		</script>
+	</body>
+</html>

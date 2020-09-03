@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>最家</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/myorder.css" />
+		<link rel="stylesheet" type="text/css" href="css/mygxin.css" />
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+		<script type="text/javascript">
+		function search(){
+				$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+				 axios({
+						url:"OrdersServlet.do",
+						params:{
+							op:'search',
+							oids:vue.$data.oids
+						}
+					}).then((res)=>{
+						$(".dkuang").hide();
+						for (var i = 0; i < res.data.list.length; i++) {
+							var oids=res.data.list[i].oids;
+							oids="订单号:"+oids;
+							$(".dkuang").find(".oidcc").each(function(){
+							var txt2=$(this).text();
+								if(txt2==oids){
+									$(this).parent().parent().parent(".dkuang").show();
+								}
+								$("#wa li").eq(0).click(function(){
+									$(".dkuang").show();
+								})	
+							});
+						}
+						
+					});
+				}
+		function searchbypname(){
+			$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+			 axios({
+					url:"OrdersServlet.do",
+					params:{
+						op:'searchByPname',
+						pname:vue.$data.pname
+					}
+				}).then((res)=>{
+					$(".dkuang").hide();
+					for (var i = 0; i < res.data.list.length; i++) {
+						var oids=res.data.list[i].oids;
+						oids="订单号:"+oids;
+						$(".dkuang").find(".oidcc").each(function(){
+						var txt2=$(this).text();
+							if(txt2==oids){
+								$(this).parent().parent().parent(".dkuang").show();
+							}
+							$("#wa li").eq(0).click(function(){
+								$(".dkuang").show();
+							})	
+						});
+					}
+					
+				});
+			}
+		
+		function begin(endtime,oid){
+			
+			
+			setInterval(function(){
+				
+				var now =Date.parse(new Date());
+				if(now>endtime){
+					vue.change22(oid);
+					return;
+				}
+				var lo = endtime-now;
+				//获取星期数 0周日
+				//console.info(now);
+				 //((str % 60).toString().length < 2
+				var hours =parseInt((lo/1000)/3600).toString().length < 2?'0'+parseInt((lo/1000)/3600).toString():parseInt((lo/1000)/3600).toString();
+				var minutes =parseInt(((lo/1000)%3600)/60).toString().length < 2?'0'+parseInt(((lo/1000)%3600)/60).toString():parseInt(((lo/1000)%3600)/60).toString();
+				var seconds =parseInt(((lo/1000)%3600)%60).toString().length < 2?'0'+parseInt(((lo/1000)%3600)%60).toString():parseInt(((lo/1000)%3600)%60).toString();
+				/* var sdf = new SimpleDateFormat("ss");
+				var s=sdf.format(now);  */
+				document.getElementById(oid).innerText ="还剩"+hours+"小时"+minutes+"分"+seconds+"秒自动关闭";
+			}, 1000);
+		}
+		</script>
+		
+	</head>
+	<body >
+		<!------------------------------head------------------------------>
+		<div class="head ding">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<a href="#" id="login">登录</a>
+							<a href="#" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input type="text" placeholder="搜索" />
+							<input type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+				</ul>
+			</div>
+		</div>
+		<!------------------------------idea------------------------------>
+		<div class="address mt">
+			<div class="wrapper clearfix">
+				<a href="#" class="fl">首页</a>
+				<span>/</span>
+				<a href="mygxin.html">个人中心</a>
+				<span>/</span>
+				<a href="myorderq.html" class="on">我的订单</a>
+			</div>
+		</div>
+		
+		<!------------------------------Bott------------------------------>
+		<div class="Bott">
+			<div class="wrapper clearfix">
+				<div class="zuo fl">
+					<h3>
+						<a href="#" v-if="loginedUser != ''"><img style="height: 92px;width: 92px" :src="loginedUser.head" align="middle"/></a>
+						<p class="clearfix"><a href="mygxin.html" class="fl" v-if="loginedUser == ''"><img src="img/tx.png"/></a>
+						<span class="fl" v-if="loginedUser != ''">{{loginedUser.uname}}</span>
+						</progress><span class="fr" v-if="loginedUser != ''" @click="logout">退出登录</span></p>
+						<span v-if="loginedUser == ''"><a href="login.html" id="login" >[点击登录]</a></span>
+						
+					</h3>
+					<div>
+						<h4>我的交易</h4>
+						<ul>
+							<li><a href="cart.html">我的购物车</a></li>
+							<li><a href="myorderq.html">我的订单</a></li>
+							<li><a href="myprod.html">评价晒单</a></li>
+						</ul>
+						<h4>个人中心</h4>
+						<ul>
+							<li><a href="mygxin.html">我的中心</a></li>
+							<li><a href="address.html">地址管理</a></li>
+						</ul>
+						<h4>账户管理</h4>
+						<ul>
+							<li  class="on"><a href="mygrxx.html">个人信息</a></li>
+							<li><a href="remima.html">修改密码</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="you fl">
+					<div class="my clearfix">
+						<h2 class="fl">我的订单</h2>
+						<a href="#" class="fl">请谨防钓鱼链接或诈骗电话，了解更多&gt;</a>
+					</div>
+					<div class="dlist clearfix">
+						<ul class="fl clearfix" id="wa">
+							<li class="on"><a href="#2">全部有效订单</a></li>
+							<li><a href="#2" >待支付</a></li>
+							<li ><a href="#2l" >待收货</a></li>
+							<li><a href="#2" >已关闭</a></li>
+						</ul>
+						<form action="#" method="get" class="fr clearfix" style="float: left;width: 200px">
+							<input type="text" name="name" id="" value=""  v-model="oids" placeholder="请输入订单号" />
+							<input type="button" name="" id="" value="" onclick="search()"/>
+						</form>
+						<form action="#" method="get" class="fr clearfix" style="float: left;width: 10px;border: none;">
+							
+						</form>
+						<form action="#" method="get" class="fr clearfix" style="float: left;width: 200px">
+							<input type="text" name="name" id="" value=""  v-model="pname" placeholder="请输入商品名称" />
+							<input type="button" name="" id="" value="" onclick="searchbypname()"/>
+						</form>
+					</div>
+					 <div class="dkuang" v-for="o in list3">
+						<p class="one">已收货</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>{{o.createtime}}</li>
+								<li>{{o.name}}</li>
+								<li class="oidcc">订单号:{{o.oids}}</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>{{o.total}}</span>元</p>
+						</div>
+						<div class="shohou clearfix" v-for="(p,index) in o.p">
+							<a href="#" class="fl"><img :src="p.image"/></a>
+							<p class="fl"><a href="#">{{p.pname}}</a><a href="#">¥{{p.price}}×{{p.count}}</a></p>
+							<p class="fr" >
+								<a href="myprod.html" v-if="p.estatu==0">待评价</a>
+								<a href="myprod.html" v-else="">已评价</a>
+								<a v-if="index==0" :href="'orderxq.html#'+o.oid">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="dkuang clearfix deng" v-for="o in list1">
+						<p class="one fl">待收货</p>
+						<div class="clearfix" v-if="o.statu==1"><div class="fl vewwl"><a  class="ckwl">已准备发货</a></div></div>
+						<div  class="clearfix" v-if="o.statu==4">
+							<div class="fl vewwl">
+								<a :href="'wuliu.html#'+o.oid" class="ckwl">已发货    查看物流</a>
+								
+							</div>
+						</div>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>{{o.createtime}}</li>
+								<li>{{o.name}}</li>
+								<li class="oidcc">订单号:{{o.oids}}</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>{{o.total}}</span>元</p>
+						</div>
+						<div class="shohou clearfix" v-for="(p,index) in o.p">
+							<a href="#" class="fl"><img :src="p.image"/></a>
+							<p class="fl"><a href="#">{{p.pname}}</a><a href="#">¥{{p.price}}×{{p.count}}</a></p>
+							<p class="fr" v-if="index==0">
+								<a href="#" @click="sure3(o.oid)">确认收货</a>
+								<a :href="'orderxq.html#'+o.oid">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="dkuang deng" v-for="o in list0">
+						<p class="one">待支付</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix" >
+								<li>{{o.createtime}}</li>
+								<li>{{o.name}}</li>
+								<li class="oidcc">订单号:{{o.oids}}</li>
+								<li>在线支付</li>
+								<li :id="o.oid" onload="begin(o.endtime,o.oid)" style="font-size: 15px;color: #a10000">111</li>
+							</ul>
+							<p class="fr">订单金额：<span>{{o.total}}</span>元</p>
+							
+						</div>
+						<div class="shohou clearfix" v-for="(p,index) in o.p">
+							<a href="#" class="fl"><img :src="p.image"/></a>
+							<p class="fl"><a href="#">{{p.pname}}</a><a href="#">¥{{p.price}}×{{p.count}}</a></p>
+							
+							<p class="fr" v-if="index==0" >
+								<a :href="'pay.html#'+o.oid" style="margin-bottom: 0px;">立即支付</a>
+								<a :href="'orderxq.html#'+o.oid">订单详情</a>
+								<a href="#" @click="sure2(o.oid,o.endtime)">取消订单</a>
+							</p>
+						</div>
+							
+					</div>
+					 <div class="dkuang" v-for="o in list2">
+						<p class="one">已关闭</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>{{o.createtime}}</li>
+								<li>{{o.name}}</li>
+								<li class="oidcc">订单号:{{o.oids}}</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>{{o.total}}</span>元</p>
+						</div>
+						<div class="shohou clearfix" v-for="(p,index) in o.p">
+							<a href="#" class="fl"><img :src="p.image"/></a>
+							<p class="fl"><a href="#">{{p.pname}}</a><a href="#">¥{{p.price}}×{{p.count}}</a></p>
+							<p class="fr" v-if="index==0">
+								<a href="#">交易失败</a>
+								<a :href="'orderxq.html#'+o.oid">订单详情</a>
+							</p>
+						</div>
+					</div> 
+					<div class="fenye clearfix">
+						<a href="#"><img src="img/zuo.jpg"/></a>
+						<a href="#">1</a>
+						<a href="#"><img src="img/you.jpg"/></a>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		<div class="mask"></div>
+		<div  class="tipDel">
+			<p>确定要确定收货吗？</p>
+			<p class="clearfix">
+				<a class="fl cer" href="#" >确定</a>
+				<a class="fr cancel" href="#">取消</a>
+			</p>
+		</div>
+		<div  class="tipDel2">
+			<p>确定要取消订单吗？</p>
+			<p class="clearfix">
+				<a class="fl cer2" href="#" >确定</a>
+				<a class="fr cancel2" href="#">取消</a>
+			</p>
+		</div>
+		<script type="text/javascript">
+		
+		
+		
+		var vue =new Vue({
+			el:'.Bott',
+			data:{
+				list0:[],//待支付
+				list1:[],//待收货
+				list2:[],//失败关闭
+				list3:[],//成功
+				oids:'',
+				pname:'',
+				loginedUser : {}
+			},
+			created: function(){
+				axios({
+					url:"OrdersServlet.do",
+					params:{
+						op:'queryorders',	
+					}
+				}).then((res)=>{
+					if(res.data=="请先登录"){
+						alert(res.data);
+					}else{
+						var arr=res.data.list;
+						for (var i = 0; i < arr.length; i++) {
+							console.info(arr[i].statu);
+							if(arr[i].statu==0){
+								arr[i].nationality="endtime";
+								arr[i].endtime=parseInt(Date.parse(new Date(arr[i].createtime))/1000+12*7200) * 1000;
+								begin(arr[i].endtime,arr[i].oid);
+								this.list0.push(arr[i]);
+							}
+							if(arr[i].statu==1||arr[i].statu==4){
+								this.list1.push(arr[i]);
+							}
+							if(arr[i].statu==2){
+								this.list2.push(arr[i]);
+							}
+							if(arr[i].statu==3){
+								this.list3.push(arr[i]);
+							}
+						}
+						//console.info(this.list0);
+					}
+				});
+				axios({
+					url : "LoginfileServlet?op=GetLoginedUser",
+				}).then((res)=>{
+					if(res.data != null){
+						vue.$data.loginedUser = res.data;
+						//console.info(vue1.$data.loginedUser.email);
+						//vue1.$data.yemail = vue1.$data.loginedUser.email.substr(0,4)+"*****"+vue1.$data.loginedUser.email.substr(-4,4);
+					}else{
+						vue.$data.loginedUser = "";
+					}
+				});
+				
+			},
+			methods:{
+				logout(){
+					axios({
+						url : "LoginfileServlet?op=Loginout",
+					}).then((res)=>{
+						if(res.data=="退出登录成功"){
+							location.href = "index.html";
+						}
+					});
+				},
+				sure3(oid,endtime){
+					$(".tipDel").show();
+					$(".mask").show();
+					$('.cancel').click(function(){
+						$(".mask").hide();
+						$(".tipDel").hide();
+					}) 
+					$('.cer').off("click").click(function(){
+						//console.info("111");
+						vue.change3(oid);
+						
+						$(".mask").hide();
+						$(".tipDel").hide();
+					})
+				},
+				change3(oid){
+					axios({
+						url:"OrdersServlet.do",
+						params:{
+							op:'changestatu',
+							oid:oid,
+							statu:'3'
+						}
+					}).then((res)=>{
+						alert(res.data);
+						for (var i = 0; i < this.list1.length; i++) {
+							if(this.list1[i].oid==oid){
+								this.list3.push(this.list1[i]);
+								this.list1.splice(i, 1);
+							}	
+						}
+						$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+						$(".dkuang").show();
+					});
+					
+				},
+				sure2(oid){
+					$(".tipDel2").show();
+					$(".mask").show();
+					$('.cancel2').click(function(){
+						$(".mask").hide();
+						$(".tipDel2").hide();
+					}) 
+					$('.cer2').off("click").click(function(){
+						//console.info("111");
+						//clearInterval(timer);
+						vue.change2(oid);
+						
+						$(".mask").hide();
+						$(".tipDel2").hide();
+					})
+				},
+				change2(oid){
+					axios({
+						url:"OrdersServlet.do",
+						params:{
+							op:'changestatu',
+							oid:oid,
+							statu:'2'
+						}
+					}).then((res)=>{
+						alert(res.data);
+						for (var i = 0; i < this.list0.length; i++) {
+							if(this.list0[i].oid==oid){
+								this.list2.push(this.list0[i]);
+								this.list0.splice(i, 1);
+							}	
+						}
+						$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+						$(".dkuang").show();
+					});
+					
+				},
+				searchbypname(){
+					$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+					alert(this.oids);
+					 axios({
+							url:"OrdersServlet.do",
+							params:{
+								op:'searchByPname',
+								oids:this.oids,
+								pname:this.pname
+							}
+						}).then((res)=>{
+							this.list0=res.data.list0;
+							this.list1=res.data.list1;
+							this.list2=res.data.list2;
+							this.list3=res.data.list3;
+						});
+				},
+				change22(oid){
+					axios({
+						url:"OrdersServlet.do",
+						params:{
+							op:'changestatu',
+							oid:oid,
+							statu:'2'
+						}
+					}).then((res)=>{
+						//alert(res.data);
+						for (var i = 0; i < this.list0.length; i++) {
+							if(this.list0[i].oid==oid){
+								this.list2.push(this.list0[i]);
+								this.list0.splice(i, 1);
+							}	
+						}
+						$("#wa li").eq(0).addClass("on").siblings().removeClass("on");
+						$(".dkuang").show();
+					});
+					
+				}
+			}
+		});
+		
+		
+		</script>
+		<!--返回顶部-->
+		
+		<!--footer-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/user.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

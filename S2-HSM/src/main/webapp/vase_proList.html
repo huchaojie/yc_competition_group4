@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>花瓶花器</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/proList.css"/>
+		<script type="text/javascript"src="js/axios.min.js"></script>
+		<script type="text/javascript"src="js/vue.min.js"></script>
+		<script type="text/javascript"src="js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+		<script type="text/javascript">
+			function aa() {
+			
+				/*************鼠标悬浮*************/
+				/* $(".proList li").on('mouseenter',function(){
+					var html="";
+					html = '<p class="quick">快速浏览</p>';
+					$(this).css('border','1px solid #000').append(html);
+					$(".quick").on('click',function(){
+						$(".mask").show();
+						$(".proDets").show();
+					});
+					$(".btns .cart").click(function(){
+						if($(".categ p").hasClass("on")){
+							$(".proDets").hide();
+							$(".mask").hide();
+						}
+					});
+				});
+				$(".proList li").on('mouseleave',function(){
+					$(this).find("p").remove();
+					$(this).css('border','1px solid #fff');
+				});
+				//关闭按钮
+				$(".off").click(function(){
+					$(".mask").hide();
+					$(".proDets").hide();
+					$(".pleaseC").hide();
+				}); */
+				
+			}
+		</script>
+	</head>
+	<body>
+		<!------------------------------head------------------------------>
+		<div class="head">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<span v-if="loginedUser != ''" style="font-size: 14px">欢迎{{loginedUser.uname}}</span>
+							<span v-else><a href="login.html" id="login">登录</a></span> <a
+								href="reg.html" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input v-model="sname" type="text" placeholder="搜索" />
+							<input @click="goto1()" type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+				var vue3=new Vue({
+					el:"#top",
+					data:{
+						sname:"",
+						loginedUser : {}
+					},created:function(){
+						var url = "LoginfileServlet?op=GetLoginedUser";
+						$.post(url,null,function(data){
+							if(data != "null"){
+							vue3.$data.loginedUser = JSON.parse(data);
+							//console.info(vue1.$data.loginedUser);
+							}else{
+								vue3.$data.loginedUser = "";
+							}
+						});
+					},
+					methods:{
+						goto1(){
+							sname=this.sname;
+							location.href="search.html?"+sname;
+						}
+					}
+				});
+				</script>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+					<li><a href="fight.html">抗疫专区</a></li>
+				</ul>
+			</div>
+		</div>
+		<!------------------------------banner------------------------------>
+		<div class="banner">
+			<a href="#"><img src="img/temp/banner1.jpg"/></a>
+		</div>
+		<!-----------------address------------------------------->
+		<div class="address">
+			<div class="wrapper clearfix">
+				<a href="index.html">首页</a>
+				<span>/</span>
+				<a href="flowerDer.html">装饰摆件</a>
+				<span>/</span>
+				<a href="vase_proList.html" class="on">花瓶花器</a>
+			</div>
+		</div>
+		<!-------------------current---------------------->
+		<div  id="app">
+		<div class="current">
+			<div class="wrapper clearfix">
+				<h3 class="fl">花瓶花器</h3> 
+				<div class="fr choice">
+					<p class="default">排序方式</p>
+					<ul class="select">
+						<li @click="sortbycreatetime()">新品上市</li>
+						<li @click="sortbyPriceDesc()">价格从高到低</li>
+						<li @click="sortbyPriceAsc()">价格从低到高</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!----------------proList------------------------->
+		<div onmouseover="aa()">
+		<ul class="proList wrapper clearfix">
+			<li v-for="v in vase_proList">
+				<a :href="'proDetail.html#'+v.sid">
+					<dl>
+						<dt><img :src="v.image"></dt>
+						<dd>{{v.sname}}</dd>
+						<dd>￥{{v.price}}</dd>
+					</dl>
+				</a>
+			</li>
+			
+		</ul>
+		<div align="center">
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-2)">首页</button>
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-1)">上页</button>
+			第<input type="number" class="yongyin" style="width: 50px; text-align: center" min="1"
+				max="3" v-model="page" >页
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(1)">下页</button>
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(2)">尾页</button> 
+		</div>
+		</div>
+		</div>
+		<script type="text/javascript">
+			var vue = new Vue({
+				el:"#app",
+				data:{
+					vase_proList:[],
+					page:1,
+					pages:0,
+					option:0
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"6",
+							b:"0",
+							page:this.page,
+							size:"12"
+						}
+					}).then((res)=>{
+						console.info(res.data.list);
+						this.vase_proList=res.data.list;
+						this.pages=res.data.pages;
+						console.info(this.pages);
+					});
+				},
+				methods:{
+					query(type){
+						switch(type){
+						case -2:
+							this.page=1;
+							break;
+						case -1:
+							this.page-=1;
+							break;
+						case 1:
+							this.page+=1;
+							break;
+						case 2:
+							this.page=this.pages;
+							break;
+						}
+						if(this.page<1) this.page=1;
+						if(this.page>this.pages) this.page=this.pages;
+						if(this.option==0){
+							axios({
+								url:"queryProductServlet.do",
+								params:{
+									op:"queryPage",
+									a:"6",
+									b:"0",
+									page:this.page,
+									size:"12"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}else if(this.option==1){
+							axios({
+								url:"searchServlet.do",
+								params:{
+									op:"searchIsNew",
+									page:this.page,
+									size:"12"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}else if(this.option==2){
+							axios({
+								url:"searchServlet.do",
+								params:{
+									op:"searchSort",
+									a:"6",
+									b:"0",
+									bywhat:"a",
+									page:this.page,
+									size:"12",
+									obj:"hot",
+									orderby:"desc"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}else if(this.option==3){
+							axios({
+								url:"searchServlet.do",
+								params:{
+									op:"searchSort",
+									a:"6",
+									b:"0",
+									bywhat:"a",
+									page:this.page,
+									size:"12",
+									obj:"hot",
+									orderby:"asc"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}else if(this.option==4){
+							axios({
+								url:"searchServlet.do",
+								params:{
+									op:"searchSort",
+									a:"6",
+									b:"0",
+									bywhat:"b",
+									page:this.page,
+									size:"12",
+									obj:"price",
+									orderby:"desc"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}else if(this.option==5){
+							axios({
+								url:"searchServlet.do",
+								params:{
+									op:"searchSort",
+									a:"6",
+									b:"0",
+									bywhat:"b",
+									page:this.page,
+									size:"12",
+									obj:"price",
+									orderby:"asc"
+								}
+							}).then((res)=>{
+								this.vase_proList=res.data.list;
+							});
+						}
+					},
+					sortbycreatetime(){
+						this.option=1;
+						axios({
+							url:"searchServlet.do",
+							params:{
+								op:"searchIsNew",
+								page:this.page,
+								size:"12",
+								a:"6",
+								b:"0"
+							
+							}
+						}).then(res=>{
+							this.vase_proList=res.data.list;
+						});
+						
+					},
+					sortbyHotDesc(){
+						this.option=2;
+						axios({
+							url:"searchServlet.do",
+							params:{
+								op:"searchSort",
+								a:"6",
+								b:"0",
+								bywhat:"a",
+								page:this.page,
+								size:"12",
+								obj:"hot",
+								orderby:"desc"
+							}
+						}).then((res)=>{
+							this.vase_proList=res.data.list;
+							this.pages=res.data.pages;
+						});
+					},
+					sortbyHotAsc(){
+						this.option=3;
+						axios({
+							url:"searchServlet.do",
+							params:{
+								op:"searchSort",
+								a:"6",
+								b:"0",
+								bywhat:"a",
+								page:this.page,
+								size:"12",
+								obj:"hot",
+								orderby:"asc"
+							}
+						}).then((res)=>{
+							this.vase_proList=res.data.list;
+						});
+					},
+					sortbyPriceDesc(){
+						this.option=4;
+						axios({
+							url:"searchServlet.do",
+							params:{
+								op:"searchSort",
+								a:"6",
+								b:"0",
+								bywhat:"b",
+								page:this.page,
+								size:"12",
+								obj:"price",
+								orderby:"desc"
+							}
+						}).then((res)=>{
+							this.vase_proList=res.data.list;
+						});
+					},
+					sortbyPriceAsc(){
+						this.option=5;
+						axios({
+							url:"searchServlet.do",
+							params:{
+								op:"searchSort",
+								a:"6",
+								b:"0",
+								bywhat:"b",
+								page:this.page,
+								size:"12",
+								obj:"price",
+								orderby:"asc"
+							}
+						}).then((res)=>{
+							this.vase_proList=res.data.list;
+						});
+					}
+				}
+			});
+		</script>
+	
+		<!----------------mask------------------->
+		<div class="mask"></div>
+		<!-------------------mask内容------------------->
+		<!-- <div class="proDets">
+			<img class="off" src="img/temp/off.jpg" />
+			<div class="tit clearfix">
+				<h4 class="fl">【最家】非洲菊仿真花干花</h4>
+				<span class="fr">￥17.90</span>
+			</div>
+			<div class="proCon clearfix">
+				<div class="proImg fl">
+					<img class="list" src="img/temp/proDet.jpg"  />
+					<div class="smallImg clearfix">
+						<img src="img/temp/proDet01.jpg" data-src="img/temp/proDet01_big.jpg">
+						<img src="img/temp/proDet02.jpg" data-src="img/temp/proDet02_big.jpg">
+						<img src="img/temp/proDet03.jpg" data-src="img/temp/proDet03_big.jpg">
+						<img src="img/temp/proDet04.jpg" data-src="img/temp/proDet04_big.jpg">
+					</div>
+				</div>
+				<div class="fr">
+					<div class="proIntro">
+						<p>颜色分类</p>
+						<div class="smallImg clearfix categ">
+							<p class="fl"><img src="img/temp/prosmall01.jpg" alt="白瓷花瓶+20支快乐花" data-src="img/temp/proBig01.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall02.jpg" alt="白瓷花瓶+20支兔尾巴草" data-src="img/temp/proBig02.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall03.jpg" alt="20支快乐花" data-src="img/temp/proBig03.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall04.jpg" alt="20支兔尾巴草" data-src="img/temp/proBig04.jpg"></p>
+						</div>
+						<p>数量&nbsp;&nbsp;库存<span>2096</span>件</p>
+						<div class="num clearfix">
+							<img class="fl sub" src="img/temp/sub.jpg">
+							<span class="fl" contentEditable="true">1</span>
+							<img class="fl add" src="img/temp/add.jpg">
+							<p class="please fl">请选择商品属性!</p>
+						</div>
+					</div>
+					<div class="btns clearfix">
+						<a href="#2"><p class="buy fl">立即购买</p></a>
+						<a href="#2"><p class="cart fr">加入购物车</p></a>
+					</div>
+				</div>
+			</div>
+			<a class="more" href="proDetail.html">查看更多细节</a>
+		</div> -->
+		<!--返回顶部-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		<div class="msk"></div>
+		<!--footer-->
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

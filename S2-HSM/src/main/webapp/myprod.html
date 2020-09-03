@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>最家</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/myorder.css" />
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+		<script type="text/javascript">
+		function aa() {
+			$("#pro li").click(function(){
+				$(this).addClass("on").siblings().removeClass("on");
+				var index=$(this).index();
+				//console.info(index);
+				$(".sx > div").eq(index).show().siblings().hide();
+			});
+		}
+		
+		</script>
+	</head>
+	<body>
+		<!------------------------------head------------------------------>
+		<div class="head ding">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<a href="#" id="login">登录</a>
+							<a href="#" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input type="text" placeholder="搜索" />
+							<input type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+				</ul>
+			</div>
+		</div>
+		<!------------------------------idea------------------------------>
+		<div class="address mt">
+			<div class="wrapper clearfix">
+				<a href="index.html" class="fl">首页</a>
+				<span>/</span>
+				<a href="mygxin.html" class="on">个人中心</a>
+				<span>/</span>
+				<a href="myprod.html" class="on">待评价商品</a>
+			</div>
+		</div>
+		
+		
+		<!------------------------------Bott------------------------------>
+	<div id="qq">
+		<div class="Bott">
+			<div class="wrapper clearfix">
+				<div class="zuo fl">
+					<h3>
+						<a href="#" v-if="loginedUser != ''"><img style="height: 92px;width: 92px" :src="loginedUser.head" align="middle"/></a>
+						<p class="clearfix"><a href="mygxin.html" class="fl" v-if="loginedUser == ''"><img src="img/tx.png"/></a>
+						<span class="fl" v-if="loginedUser != ''">{{loginedUser.uname}}</span>
+						</progress><span class="fr" v-if="loginedUser != ''" @click="logout">退出登录</span></p>
+						<span v-if="loginedUser == ''"><a href="login.html" id="login" >[点击登录]</a></span>
+						
+					</h3>
+					<div>
+						<h4>我的交易</h4>
+						<ul>
+							<li><a href="cart.html">我的购物车</a></li>
+							<li><a href="myorderq.html">我的订单</a></li>
+							<li class="on"><a href="myprod.html">评价晒单</a></li>
+						</ul>
+						<h4>个人中心</h4>
+						<ul>
+							<li><a href="mygxin.html">我的中心</a></li>
+							<li><a href="address.html">地址管理</a></li>
+						</ul>
+						<h4>账户管理</h4>
+						<ul>
+							<li><a href="mygrxx.html">个人信息</a></li>
+							<li><a href="remima.html">修改密码</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="you fl">
+					<div class="my clearfix">
+						<h2 class="fl">商品评价</h2>
+					</div>
+					<div class="dlist">
+						<ul class="clearfix" id="pro">
+							<li class="on"><a href="#2" onclick="aa()">待评价商品</a></li>
+							<li><a href="#2" onclick="aa()">已评价商品</a></li>
+							<li><a href="#2" onclick="aa()">评价失效商品</a></li>
+						</ul>
+					</div>
+					<div class="sx clearfix">
+						<div class="clearfix" id="list0">
+							<dl class="fl"  v-for="(e,index) in list0">
+								<dt><a href="#"><img :src="e.image" style="width: 160px;height: 200px"/></a></dt>
+								<dd><a href="#">{{e.pname}} {{e.style}}</a></dd>
+								<dd>¥{{e.price}}</dd>
+								<dd>{{e.eva}}人评价</dd>
+								<dd><a href="#2" @click="pingjia(index)">评价</a></dd>
+							</dl>
+							
+						</div>
+						<div class="clearfix" id="list1" >
+							<dl class="fl" v-for="(e,index) in list1">
+								<dt><a href="#"><img :src="e.image" style="width: 160px;height: 200px"/></a></dt>
+								<dd><a href="#">{{e.pname}} {{e.style}}</a></dd>
+								<dd>¥{{e.price}}</dd>
+								<dd>{{e.eva}}人评价</dd>
+								<dd><a href="#2" @click="look(index)">查看评价</a></dd>							
+							</dl>
+						</div>
+						<div class="clearfix"  id="list2">
+							<dl class="fl" v-for="e in list2">
+								<dt><a href="#"><img :src="e.image" style="width: 160px;height: 200px"/></a></dt>
+								<dd><a href="#">{{e.pname}} {{e.style}}</a></dd>
+								<dd>¥{{e.price}}</dd>
+								<dd>{{e.eva}}人评价</dd>
+								<dd><a href="#2">暂不能评价</a></dd>							
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+			<!--<dl class="fl">
+								<dt><a href="#"><img src="img/nav3.jpg"/></a></dt>
+								<dd><a href="#">家用创意壁挂  釉下彩复古</a></dd>
+								<dd>¥199.00</dd>
+								<dd>16000人评价</dd>
+								<dd><a href="#">待评价</a></dd>
+							</dl>
+							<dl class="fl">
+								<dt><a href="#"><img src="img/nav3.jpg"/></a></dt>
+								<dd><a href="#">家用创意壁挂  釉下彩复古</a></dd>
+								<dd>¥199.00</dd>
+								<dd>16000人评价</dd>
+								<dd><a href="#">待评价</a></dd>
+							</dl>-->
+			
+			<!--遮罩-->
+			<div class="mask"></div>
+			<!--评价弹框-->
+			<div class="pj">
+				<div class="clearfix"><a href="#" class="fr gb"><img src="img/icon4.png"/></a></div>
+				<h3>商品评分</h3>
+				<form action="#" method="get">
+					<div class="clearfix">
+						<p class="fl">请打分：</p>
+						<p class="fl" id="xin">
+							<a href="#2"  @click="getstar(1)"><img src="img/xin.png" /></a>
+							<a href="#2"  @click="getstar(2)"><img src="img/xin.png"/></a>
+							<a href="#2"  @click="getstar(3)"><img src="img/xin.png"/></a>
+							<a href="#2"  @click="getstar(4)"><img src="img/xin.png"/></a>
+							<a href="#2"  @click="getstar(5)"><img src="img/xin.png"/></a>
+						</p>
+					</div>
+					<textarea name="" rows="" cols="" placeholder="请输入评价" v-model="eva.content"></textarea>
+					<div class="bc">
+						<input type="button" value="保存" @click="save()" />
+						<input type="button" value="取消" />
+					</div>
+				</form>
+			</div>
+			<!--查看评价-->
+			<div class="chak">
+				<div class="clearfix"><a href="#" class="fr gb"><img src="img/icon4.png"/></a></div>
+				<h3>商品评分</h3>
+				<form action="#" method="get">
+					<div class="clearfix">
+						<p class="fl">请打分：</p>
+						<p class="fl" id="in">
+							<a href="#2"><img src="img/hxin.png"/></a>
+							<a href="#2"><img src="img/hxin.png"/></a>
+							<a href="#2"><img src="img/hxin.png"/></a>
+							<a href="#2"><img src="img/hxin.png"/></a>
+							<a href="#2"><img src="img/hxin.png"/></a>
+						</p>
+					</div>
+					<textarea name="" rows="" cols="" placeholder="请输入评价"  v-model="eva.content"></textarea>
+					<div class="bc">
+						<input type="button" value="保存"  />
+						<input type="button" value="取消" />
+					</div>
+				</form>
+			</div>
+	</div>
+			<script type="text/javascript">
+			var vue = new Vue({
+				el:'#qq',
+				data:{
+					list0:[],
+					list1:[],
+					list2:[],
+					eva:{},
+					loginedUser : {}
+				},
+				created:function(){
+					axios({
+						url : "LoginfileServlet?op=GetLoginedUser",
+					}).then((res)=>{
+						if(res.data != null){
+							vue.$data.loginedUser = res.data;
+							
+							//console.info(vue1.$data.loginedUser.email);
+							//vue1.$data.yemail = vue1.$data.loginedUser.email.substr(0,4)+"*****"+vue1.$data.loginedUser.email.substr(-4,4);
+						}else{
+							vue.$data.loginedUser = "";
+						}
+						this.query();
+					});
+					
+					
+				},
+				methods:{
+					query(){
+						axios({
+							url:"EvaServlet.do",
+							params:{
+								op:'query',
+								estatu:'3'
+							}
+						}).then((res)=>{
+							if(res.data=="请先登录"){
+								alert(res.data);
+							}else{
+								var arr=res.data.list;
+								for (var i = 0; i < arr.length; i++) {
+									if(arr[i].estatu==0){
+										this.list0.push(arr[i]);
+									}
+									if(arr[i].estatu==1){
+										this.list1.push(arr[i]);
+									}
+									if(arr[i].estatu==2){
+										this.list2.push(arr[i]);
+									}
+								}
+								setTimeout(function(){
+									$(".sx div:gt(0)").hide()
+									$(".sx div").each(function(i){
+										if($(this).html()==''){
+											var str = $("#pro li").eq(i).find("a").text();
+											var txt ='';
+											txt = '<div class="noz">当前没有'+str+'。</div>';
+											$(this).html(txt);
+										}
+									});
+								},5);
+							}
+						});
+						
+					},
+					logout(){
+						axios({
+							url : "LoginfileServlet?op=Loginout",
+						}).then((res)=>{
+							if(res.data=="退出登录成功"){
+								location.href = "index.html";
+							}
+						});
+					},
+					pingjia(index){
+						this.eva={};
+						$(".mask").show();
+						$(".pj").show();
+						console.info("33");
+						this.eva=this.list0[index];
+					},
+					getstar(index){
+						this.eva.star=index;	
+					},
+					save(){
+						console.info(this.eva);
+						axios({
+							url:"EvaServlet.do",
+							params:{
+								op:'save',
+								star:this.eva.star,
+								content:this.eva.content,
+								eid:this.eva.eid
+							}
+						}).then((res)=>{
+							alert(res.data);
+							this.list0=[],
+							this.list1=[],
+							this.list2=[],
+							this.query();
+						});
+						
+					},
+					look(index){
+						this.eva={};
+						$(".mask").show();
+						$(".chak").show();
+						this.eva=this.list1[index];
+						var index = vue.$data.eva.star-1;
+						for(var j = 0; j<5;j++){
+							if(j<=index){
+								$("#in").find("a").eq(j).find("img").attr("src","img/hxin.png");
+							}
+							else{
+								$("#in").find("a").eq(j).find("img").attr("src","img/xin.png");
+							}
+						}
+					}
+				}
+			});
+			</script>
+			
+			
+			
+		<!--返回顶部-->
+		
+		<!--footer-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/user.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

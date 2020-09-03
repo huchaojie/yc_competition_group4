@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>最家</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mygxin.css" />
+		<script type="text/javascript"src="js/vue.min.js"></script>
+		<script type="text/javascript"src="js/axios.min.js"></script>
+		<script type="text/javascript"src="js/ajax.js"></script>
+		<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+		<script type="text/javascript">
+		
+		function loadSheng1(){
+	    	post("AreaServlet.do","level=0",function(text){
+	    		var arr=text.split(",");
+				vue.$data.shengItems1=arr;
+	    	});
+	    }
+		function loadShi1(shengIndex){
+	    	if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+	    	post("AreaServlet.do","level=1&shengIndex="+shengIndex,function(text){
+	    		var arr=text.split(",");
+	    		vue.$data.shiItems1=arr;
+	    	});
+	    }
+		function loadXian1(shengIndex,shiIndex){
+			if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+			if(shiIndex==undefined){
+				shiIndex=0;
+	    	}
+	    	post("AreaServlet.do","level=2&shengIndex="+shengIndex+"&shiIndex="+shiIndex,function(text){
+	    		var arr=text.split(",");
+				vue.$data.xianItems1=arr;
+	    	});
+	    }
+		function loadSheng(){
+	    	post("AreaServlet.do","level=0",function(text){
+	    		var arr=text.split(",");
+				vue.$data.shengItems=arr;
+	    	});
+	    }
+		function loadShi(shengIndex){
+	    	if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+	    	post("AreaServlet.do","level=1&shengIndex="+shengIndex,function(text){
+	    		var arr=text.split(",");
+	    		vue.$data.shiItems=arr;
+	    	});
+	    }
+		function loadXian(shengIndex,shiIndex){
+			if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+			if(shiIndex==undefined){
+				shiIndex=0;
+	    	}
+	    	post("AreaServlet.do","level=2&shengIndex="+shengIndex+"&shiIndex="+shiIndex,function(text){
+	    		var arr=text.split(",");
+				vue.$data.xianItems=arr;
+	    	});
+	    }
+		function aa() {
+			$("#addxad").click(function(){
+				$(".mask").show();
+				$(".adddz").show();
+			});
+			
+				$("#readd").click(function(){
+					$(".mask").show();
+					$(".readd").show();
+				});
+				$("#deladd").click(function(){
+					$(this).parents("#dizhi").remove();
+				});
+			
+				$(".bc>input").click(function(){
+					if($(this).val()=="保存"){
+						$(".mask").hide();
+						$(".readd").hide();
+					}else{
+						$(".mask").hide();
+						$(".readd").hide();
+					}
+				});
+				
+			
+		}
+		</script>
+	</head>
+	<body>
+	<div id="qqq">
+		<!------------------------------head------------------------------>
+		<div class="head ding">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<a href="login.html" id="login">登录</a>
+							<a href="reg.html" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input type="text" placeholder="搜索" />
+							<input type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+				</ul>
+			</div>
+		</div>
+		<!------------------------------idea------------------------------>
+		<div class="address mt">
+			<div class="wrapper clearfix">
+				<a href="index.html" class="fl">首页</a>
+				<span>/</span>
+				<a href="mygxin.html">个人中心</a>
+				<span>/</span>
+				<a href="address.html" class="on">地址管理</a>
+			</div>
+		</div>
+		
+		<!------------------------------Bott------------------------------>
+		<div class="Bott">
+			<div class="wrapper clearfix">
+				<div class="zuo fl">
+					<h3>
+						<a href="#" v-if="loginedUser != ''"><img style="height: 92px;width: 92px" :src="loginedUser.head" align="middle"/></a>
+						<p class="clearfix"><a href="mygxin.html" class="fl" v-if="loginedUser == ''"><img src="img/tx.png"/></a>
+						<span class="fl" v-if="loginedUser != ''">{{loginedUser.uname}}</span>
+						</progress><span class="fr" v-if="loginedUser != ''" @click="logout">退出登录</span></p>
+						<span v-if="loginedUser == ''"><a href="login.html" id="login" >[点击登录]</a></span>
+						
+					</h3>
+					<div>
+						<h4>我的交易</h4>
+						<ul>
+							<li><a href="cart.html">我的购物车</a></li>
+							<li><a href="myorderq.html">我的订单</a></li>
+							<li><a href="myprod.html">评价晒单</a></li>
+						</ul>
+						<h4>个人中心</h4>
+						<ul>
+							<li><a href="mygxin.html">我的中心</a></li>
+							<li class="on"><a href="address.html">地址管理</a></li>
+						</ul>
+						<h4>账户管理</h4>
+						<ul>
+							<li><a href="mygrxx.html">个人信息</a></li>
+							<li><a href="remima.html">修改密码</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="you fl">
+					<h2>收货地址</h2>
+					<div class="add" style="flex-wrap: wrap;">
+						<div>
+							<a href="#2" id="addxad" @click="setaddr()"><img src="img/jia.png"/></a>
+							<span>添加新地址</span>
+						</div>
+						<div id="dizhi" v-for="a in list" >
+							<p>{{a.name}}</p>
+							<span v-if="a.dft==1" >[默认地址]</span>
+							<button v-else="" @click="setdft(a.aid)">[设置为默认地址]</button>
+							<p>{{a.phone}}</p>
+							<p>{{a.addr}}</p>
+							<p></p>
+							<a href="#"  id="readd" @click="change(a.aid)" >修改</a>
+							<a href="#" id="deladd" @click="dele(a.aid,a.dft)">删除</a>
+						</div>
+						
+						
+					</div>		
+				</div>
+			</div>
+		</div>
+		<!--编辑弹框-->
+		<!--遮罩-->
+		<div class="mask"></div>
+		<div id="area" class="adddz">
+			<form action="#" method="get">
+				<input type="text" placeholder="姓名" class="on" v-model="addr.name"/>
+				<input type="text" placeholder="手机号" v-model="addr.phone"/>
+				
+				
+				<div class="city">
+					<select id="sheng1" @change="changeSheng1()">
+						<option v-for="sheng in shengItems1" >{{sheng}}</option>
+					</select>
+					<select id="shi1" @change="changeShi1()">
+						<option v-for="shi in shiItems1">{{shi}}</option>
+					</select>
+					<select id="xian1" @change="xian1()">
+						<option v-for="xian in xianItems1">{{xian}}</option>
+					</select>
+					
+				</div> 
+				
+				
+				<textarea name="" rows="" cols="" placeholder="详细地址" v-model="addr.addr"></textarea>
+				
+				<div class="bc">
+					<input type="button" value="保存" @click="insert()"/>
+					<input type="button" value="取消" />
+				</div>
+			</form>
+		</div>
+		
+
+		
+		<div class="readd">
+			<form action="#" method="get">
+				<input type="text"  class="on" :value="addr.name" v-model="addr.name"/>
+				<input type="text" :value="addr.phone" v-model="addr.phone"/>
+				<div class="city">
+					<select id="sheng" @change="changeSheng()" >
+						<option  v-for="(sheng,i) in shengItems" :selected="i==addr.sheng" >{{sheng}}</option>
+					</select>
+					<select id="shi" @change="changeShi()">
+						<option v-for="(shi,i) in shiItems" :selected="i==addr.shi">{{shi}}</option>
+					</select>
+					<select id="xian" @change="changexian()">
+						<option v-for="(xian,i) in xianItems" :selected="i==addr.xian">{{xian}}</option>
+					</select>
+					
+				</div>
+				<textarea name="" rows="" cols="" placeholder="详细地址" v-model="addr.addr"></textarea>
+				
+				<div class="bc">
+					<input type="button" value="保存" @click="update()"/>
+					<input type="button" value="取消" @click="query()"/>
+				</div>
+			</form>
+		</div>
+		<div class="mask"></div>
+		<div  class="tipDel">
+			<p>确定要删除该商品吗？</p>
+			<p class="clearfix">
+				<a class="fl cer" href="#" >确定</a>
+				<a class="fr cancel" href="#">取消</a>
+			</p>
+		</div>
+		</div>
+		<script type="text/javascript">
+		var vue=new Vue({
+			  el:"#qqq",
+			  data:{
+				  loginedUser : {},
+				  shengItems:[],
+				  shiItems:[],
+				  xianItems:[],
+				  shengItems1:[],
+				  shiItems1:[],
+				  xianItems1:[],
+				  list:[],
+				  addr:{},
+				  sheng:0,
+				  shi:0,
+				  xian:0
+			  },
+		  //事件函数
+		  created:function(){
+			  this.query();
+			  var url = "LoginfileServlet?op=GetLoginedUser";
+				$.post(url,null,function(data){
+					if(data != "null"){
+						vue.$data.loginedUser = JSON.parse(data);
+						//console.info(vue1.$data.loginedUser.email);
+						//vue1.$data.yemail = vue1.$data.loginedUser.email.substr(0,4)+"*****"+vue1.$data.loginedUser.email.substr(-4,4);
+					}else{
+						vue.$data.loginedUser = "";
+					}
+				});
+		  },
+		  methods:{
+			  query(){
+				  loadSheng();
+				  loadShi();
+				  loadXian();
+				  loadSheng1();
+				  loadShi1();
+				  loadXian1();
+				  axios({
+					url:"AddressServlet.do",
+						params:{
+							op:'queryadd'
+						}
+					}).then((res)=>{
+						if(res.data=='请先登录'){
+							alert(res.data);
+						}else{
+							this.list=res.data.list;
+						}
+					
+					});
+			  },
+			  changeSheng1(){
+				  var sheng=document.getElementById("sheng1");//==sheng
+				  this.sheng=sheng.selectedIndex;
+				  this.shi=0;
+				  loadShi1(sheng.selectedIndex);//selectedIndex获取选中索引
+				  loadXian1(sheng.selectedIndex,0);//
+			  },
+		      changeShi1(){
+				 
+				  var sheng=document.getElementById("sheng1");
+				  var shi=document.getElementById("shi1");
+				  this.shi=shi.selectedIndex;
+				  this.xian=0;
+				  loadXian1(sheng.selectedIndex,shi.selectedIndex);
+			  },changexian1(){
+				  var xian=document.getElementById("xian1");
+				  this.xian=xian.selectedIndex;
+			  },
+			  changeSheng(){
+				  var sheng=document.getElementById("sheng");//==sheng
+				  this.sheng=sheng.selectedIndex;
+				  this.shi=0;
+				  loadShi(sheng.selectedIndex);//selectedIndex获取选中索引
+				  loadXian(sheng.selectedIndex,0);//
+			  },
+		      changeShi(){
+				 
+				  var sheng=document.getElementById("sheng");
+				  var shi=document.getElementById("shi");
+				  this.shi=shi.selectedIndex;
+				  this.xian=0;
+				  loadXian(sheng.selectedIndex,shi.selectedIndex);
+			  },
+			  changexian(){
+				  var xian=document.getElementById("xian");
+				  this.xian=xian.selectedIndex;
+			  },
+			  dele(aid,dft){
+				$(".tipDel").show();
+				$(".mask").show();
+				$('.cancel').click(function(){
+					$(".mask").hide();
+					$(".tipDel").hide();
+				}) 
+				$('.cer').off("click").click(function(){
+					console.info("111");
+					vue.del(aid,dft);
+					$(".mask").hide();
+					$(".tipDel").hide();
+				})
+			  },
+			  del(aid,dft){
+				  if(dft==1){
+					  alert("该地址为默认地址不能删除！");
+					  return;
+				  }
+				  axios({
+				  	url:"AddressServlet.do",
+					params:{
+						op:'del',
+						aid:aid
+					}
+				}).then((res)=>{
+					alert(res.data);
+					this.query();
+				});
+			  },
+			  change(aid){
+				for (let a of this.list) {
+					if(a.aid==aid){
+						this.addr=a;
+						console.info(this.addr);
+					}
+				}
+				this.sheng=this.addr.sheng;
+				this.shi=this.addr.shi;
+				this.xian=this.addr.xian;
+				 this.addr.addr=this.addr.addr.substring(this.addr.addr.lastIndexOf('区')+1,this.addr.length);
+				 loadShi(this.addr.sheng);//selectedIndex获取选中索引
+				 loadXian(this.addr.sheng,this.addr.shi);//
+				$(".mask").show();
+				$(".readd").show();
+			  },
+			  update(){
+				 
+				  axios({
+					  	url:"AddressServlet.do",
+						params:{
+							op:'change',
+							aid:this.addr.aid,
+							name:this.addr.name,
+							phone:this.addr.phone,
+							addr:this.addr.addr,
+							sheng:this.sheng,
+							shi:this.shi,
+							xian:this.xian
+						}
+					}).then((res)=>{
+						alert(res.data);
+						this.query();
+				}); 
+			  },
+			  setdft(aid){
+				  axios({
+					url:"AddressServlet.do",
+						params:{
+							op:'setdft',
+							aid:aid
+						}
+					}).then((res)=>{
+						alert(res.data);
+						this.query();
+					});
+			  },insert(){
+				  
+				  if(!this.addr.name){
+					  alert("请输入姓名");
+					  return;
+				  }
+				  console.info("1");
+				  if(!this.addr.phone){
+					  alert("请输入电话号码");
+					  return;
+				  }
+				  console.info("2");
+				  if(!this.addr.addr){
+					  alert("请输入详细地址");
+					  return;
+				  } 
+				  axios({
+					  	url:"AddressServlet.do",
+						params:{
+							op:'insert',
+							name:this.addr.name,
+							phone:this.addr.phone,
+							addr:this.addr.addr,
+							sheng:this.sheng,
+							shi:this.shi,
+							xian:this.xian
+						}
+					}).then((res)=>{
+						alert(res.data);
+						this.query();
+				});
+			  },
+			  setaddr(){
+				  this.addr={};
+			  },
+			  logout(){
+					axios({
+						url : "LoginfileServlet?op=Loginout",
+					}).then((res)=>{
+						if(res.data=="退出登录成功"){
+							location.href = "index.html";
+						}
+					});
+				}
+			  
+		  }
+		  });
+		
+		</script>
+		<!--返回顶部-->
+		
+		
+		
+		<!--footer-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/user.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chat Widget</title>
+<link rel="stylesheet" type="text/css" href="css/public.css"/>
+<!--图标库-->
+<link rel='stylesheet'
+	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+
+<!-- 默认样式-->
+<link rel="stylesheet" href="css/reset.min.css">
+
+<!-- 主要样式-->
+<link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript"src="js/axios.min.js"></script>
+<script type="text/javascript"src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/comp.js"></script>
+<script type="text/javascript">
+function upload(){
+	vue.chat.what="<img src='img/head/"+document.getElementById('file').files[0].name+"'>";
+	var url = "/S2-plhy-jiaju/Upchatimg.do";
+	//ajax文件上传必须使用Formdate对象，用于封装表单对象
+	if(document.getElementById('file').files[0].name){
+		var param = new FormData(upimg);
+		post(url,param,function(text){
+			//alert(text);
+			var input=document.getElementById("oo");
+			input.removeChild(document.getElementById("im"));
+			//href="mygrxx.html"
+			//将服务器的绝对路径为浏览器的绝对路径
+			//head.src="/C86-S2-Ppk-jiaju"+text;
+		}); 
+	}
+}
+function keydown() {
+	 //alert("6666");
+	 if(event.keyCode ==13){
+		
+	        vue.send();
+	 }
+}
+function fresh() {
+	setInterval("vue.fresh()",10000);
+	var h = document.getElementById("hhh");
+	
+	
+}
+</script>
+
+</head>
+<body onkeydown="keydown()" onload="fresh()">
+
+	<div class="container clearfix">
+		<div class="people-list" id="people-list">
+			<div class="search">
+				<input type="text" placeholder="search" /> <i class="fa fa-search"></i>
+			</div>
+			<ul class="list">
+				<li class="clearfix"><img src="img/head/jiaju.png" style="width: 55px;height: 55px;" alt="avatar" />
+					<div class="about">
+						<div class="name">最佳家具客服</div>
+						<div class="status">
+							<i class="fa fa-circle online" v-if="statu==1">在线</i> 
+							<i class="fa fa-circle offline" v-if="statu==0">离开 </i> 
+						</div>
+					</div></li>
+
+			</ul>
+		</div>
+
+		<div class="chat">
+			<div class="chat-header clearfix">
+				<img src="img/head/jiaju.png" style="width: 55px;height: 55px;" alt="avatar" />
+
+				<div class="chat-about">
+					<div class="chat-with">最佳家居客服</div>
+					<div class="chat-num-messages">已经有{{count}}条消息</div>
+				</div>
+				<i class="fa fa-star"></i>
+				
+			</div>
+			<!-- end chat-header -->
+
+			<div class="chat-history" id="hhh">
+				<ul>
+					<li class="clearfix" v-for="c in content">
+						<div class="message-data align-right" v-if="c.who==0">
+							<span class="message-data-time">{{c.time}}</span> &nbsp;
+							&nbsp; <span class="message-data-name">我</span> <i
+								class="fa fa-circle me"></i>
+
+						</div>
+						<div class="message-data" v-else="">
+							<span class="message-data-name"><i
+								class="fa fa-circle online"></i>家居客服</span> <span
+								class="message-data-time">{{c.time}}</span>
+						</div>
+						<div class="message other-message float-right" v-if="c.who==0" v-html="c.what">{{c.what}}</div>
+						<div class="message my-message" v-else="" v-html="c.what" >
+							{{c.what}}
+						</div>
+					</li>
+
+					
+
+
+
+					<!-- <li>
+						<div class="message-data">
+							<span class="message-data-name"><i
+								class="fa fa-circle online"></i> Vincent</span> <span
+								class="message-data-time">10:31 AM, Today</span>
+						</div> <i class="fa fa-circle online"></i> <i
+						class="fa fa-circle online" style="color: #AED2A6"></i> <i
+						class="fa fa-circle online" style="color: #DAE9DA"></i>
+					</li> -->
+
+				</ul>
+
+			</div>
+			<!-- end chat-history -->
+
+			<div class="chat-message clearfix">
+				<textarea  name="message-to-send" id="message-to-send"
+					placeholder="输入你的讯息" rows="3" v-model="chat.what"></textarea>
+
+				<form style="  position: relative;" id="upimg">
+					 <i class="fa fa-file-image-o" ><input name="file" accept="image/*" @change="chooseImg" id="file" type="file" style=" top: 0;
+				        left: 0; position: absolute;width: 15px;height: 15px;opacity:0;
+				        filter:alpha(opacity=0);"></i>
+			        <div id="oo"></div>
+				</form>
+				<button  @click="send()" onclick="upload()">发送</button>
+
+				
+
+			</div>
+			<!-- end chat-message -->
+
+		</div>
+		<!-- end chat -->
+	</div>
+	<!-- end container -->
+	<div id="oot">
+			<page-gotop></page-gotop>
+	</div>
+	<script type="text/javascript">
+		new Vue({el:"#oot"});
+	</script>
+	<script type="text/javascript">
+	function chat(){
+		who=null;//1是对方 0是自己
+		time=null;
+		what='';
+	}
+	var vue =new  Vue({
+		el:'.container',
+		data:{
+			mid:null,
+			content:[],
+			chat:{who:null,time:null,what:''},
+			count:0,statu:null
+		},created:function(){
+			this.fresh();
+		},methods:{
+			fresh(){
+				//console.info();
+				axios({
+					url:"ChatServlet.do",
+					params:{
+						op:"query"
+					}
+				}).then((res)=>{
+					if(res.data=='请先登录'){
+						alert(res.data);
+					}else{
+						//console.info(res.data.list);
+						this.content=JSON.parse(res.data.list.content);
+						this.count=this.content.length;
+						this.statu=res.data.statu;
+					}
+					setTimeout(function() {
+						$(".chat-history").scrollTop(document.getElementById("hhh").scrollHeight);
+				    }, 50);
+					
+				});
+			},
+			send(){
+				if(this.chat.what.trim()==''){
+					return;
+				}
+				this.chat.time=new Date().toLocaleTimeString().
+	              replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+				this.chat.who=0;
+				var temp=this.content;
+				temp.push(this.chat);
+				var params = new URLSearchParams();
+				params.append("content",JSON.stringify(temp));
+				axios({
+					url:"ChatServlet.do?op=insert",
+					params
+				}).then((res)=>{
+					if(res.data=='请先登录'){
+						alert(res.data);
+					}else{
+						this.chat.what='';
+						this.fresh();
+					}
+					
+				});
+			},chooseImg(e) {
+			    var reader = new FileReader();
+			    reader.onload = function(e) {
+			    	var input=document.getElementById("oo");
+			    	var info=document.getElementById("oo").innerHTML;
+			    	var img = document.createElement("IMG");
+			    	var strImgSrc=e.target.result;//
+			    	
+			    	img.src =strImgSrc;
+			    	img.style.width=260+"px";
+			    	img.style.height=260+"px";
+			    	img.id="im"
+			    	input.appendChild(img);
+			    	
+			    };
+			    reader.readAsDataURL(e.target.files[0]);
+			}
+			
+			
+		}
+		
+		
+		
+	});
+	
+	
+	
+	
+	</script>
+	
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src='js/handlebars.min.js'></script>
+<script type="text/javascript" src='js/list.min.js'></script>
+<script type="text/javascript" src="js/script.js"></script>
+	
+
+	
+	
+	
+
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chat Widget</title>
+
+<!--图标库-->
+<link rel='stylesheet'
+	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+
+<!-- 默认样式-->
+<link rel="stylesheet" href="css/reset.min.css">
+
+<!-- 主要样式-->
+<link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript"src="js/axios.min.js"></script>
+<script type="text/javascript"src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src='js/list.min.js'></script>
+<script type="text/javascript">
+
+function clearoo(){
+	if(document.getElementById('file').files[0].name){
+		var input=document.getElementById("oo");
+		input.removeChild(document.getElementById("im"));
+		var file=document.getElementById("file");
+		//console.info(file);
+		file.outerHTML=file.outerHTML; 
+	}
+	
+}
+function upload(e){
+	 var reader = new FileReader();
+	    reader.onload = function(e) {
+	    	var input=document.getElementById("oo");
+	    	var info=document.getElementById("oo").innerHTML;
+	    	var img = document.createElement("IMG");
+	    	var strImgSrc=e.target.result;//
+	    	//console.info(e.target.result);
+	    	img.src =strImgSrc;
+	    	img.style.width=260+"px";
+	    	img.style.height=260+"px";
+	    	img.id="im"
+	    	input.appendChild(img);
+	    	
+	    };
+	reader.readAsDataURL(e.target.files[0]);
+	vue.chat.what="<img src='img/head/"+document.getElementById('file').files[0].name+"'>";
+	var url = "/S2-plhy-jiaju/Upchatimg.do";
+	//ajax文件上传必须使用Formdate对象，用于封装表单对象
+	if(document.getElementById('file').files[0].name){
+		var param = new FormData(upimg);
+		post(url,param,function(text){
+			
+		}); 
+	}
+}
+function play()
+{
+     var myAuto = document.getElementById('myaudio');
+     myAuto.src = 'sound/1.mp3';
+     myAuto.play();
+}
+function keydown() {
+	
+	 if(event.keyCode ==13){
+	        vue.send();
+	 }
+}
+ function fresh() {
+	setInterval("vue.selected(vue.$data.theone.uid)",10000);
+}
+</script>
+
+</head>
+<body onkeydown="keydown()" onload="fresh()">
+<audio controls="controls"  preload="auto" id="myaudio" style="display: none;">
+  <source src="sound/1.mp3">
+  </audio>
+	<div class="container clearfix">
+		<div class="people-list" id="people-list">
+			<div class="search">
+				<input type="text" placeholder="search" /> <i class="fa fa-search"></i>
+			</div>
+			<ul class="list">
+				<li class="clearfix" v-for="p in people" @click="selected(p.uid)" :class="'u'+p.uid">
+					<img :src="p.head" alt="avatar" style="width:55px;height: 55px;"/>
+					<div class="about">
+						<div class="name">{{p.uname}}</div>
+						<div class="status">
+							<i class="fa fa-circle online" v-if="p.statu==1">在线</i> 
+							<i class="fa fa-circle offline" v-else="">离开 </i> 
+						</div>
+						
+					</div>
+					<div class="name" :id="p.uid" style="float: right;color: #fff;"></div>
+				</li>
+				
+
+			</ul>
+		</div>
+
+		<div class="chat">
+			<div class="chat-header clearfix">
+				<img :src="theone.head" alt="avatar" style="width:55px;height: 55px;"/>
+
+				<div class="chat-about">
+					<div class="chat-with">{{theone.uname}}</div>
+					<div class="chat-num-messages">已经有了{{theone.count}}条消息</div>
+				</div>
+				<i class="fa fa-star"></i>
+				
+			</div>
+			<!-- end chat-header -->
+
+			<div class="chat-history" id="hhh">
+				<ul>
+					<li class="clearfix" v-for="c in content">
+						<div class="message-data align-right" v-if="c.who==1">
+							<span class="message-data-time">{{c.time}}</span> &nbsp;
+							&nbsp; <span class="message-data-name">我</span> <i
+								class="fa fa-circle me"></i>
+						</div>
+						<div class="message-data" v-else="">
+							<span class="message-data-name"><i
+								class="fa fa-circle online"></i>顾客</span> <span
+								class="message-data-time">{{c.time}}</span>
+						</div>
+						<div class="message other-message float-right" v-if="c.who==1" contenteditable="true" v-html="c.what">{{c.what}}</div>
+						<div class="message my-message" v-else="" contenteditable="true" v-html="c.what">
+							{{c.what}}
+						</div>
+					</li>
+
+					
+
+
+
+					<!-- <li>
+						<div class="message-data">
+							<span class="message-data-name"><i
+								class="fa fa-circle online"></i> Vincent</span> <span
+								class="message-data-time">10:31 AM, Today</span>
+						</div> <i class="fa fa-circle online"></i> <i
+						class="fa fa-circle online" style="color: #AED2A6"></i> <i
+						class="fa fa-circle online" style="color: #DAE9DA"></i>
+					</li> -->
+
+				</ul>
+
+			</div>
+			<!-- end chat-history -->
+
+			<div class="chat-message clearfix" >
+				<textarea  name="message-to-send" id="message-to-send"
+					placeholder="请输入你的讯息" rows="3" v-model="chat.what" contenteditable="true"></textarea>
+				<form style="  position: relative;" id="upimg">
+				 <i
+					class="fa fa-file-image-o" ><input name="file" accept="image/*"   onchange="upload(event)" id="file" type="file" style=" top: 0;
+        left: 0; position: absolute;width: 15px;height: 15px;opacity:0;
+        filter:alpha(opacity=0);"></i>
+        <div id="oo"></div>
+				</form>
+				<button  @click="send()" onclick="clearoo()">发送</button>
+
+			</div>
+			<!-- end chat-message -->
+
+		</div>
+		<!-- end chat -->
+
+	</div>
+	<!-- end container -->
+	<script type="text/javascript">
+	
+	var vue =new  Vue({
+		el:'.container',
+		data:{
+			content:[],
+			people:[],
+			chat:{who:null,time:null,what:''},
+			theone:{head:null,uname:null,count:0},
+			count:0,
+			uid:0
+			
+		},created:function(){
+			axios({
+				url:"ChatServlet.do",
+				params:{
+					op:"mquerypeople"
+				}
+			}).then((res)=>{
+				if(res.data=='请先登录'){
+					alert(res.data);
+				}else{
+					this.people=res.data.list;
+					this.getxx();
+					//搜人排列
+					setTimeout(function(){
+						var searchFilter = {
+							    options: { valueNames: ['name'] },
+							    init: function() {
+							      var userList = new List('people-list', this.options);
+							      var noItems = $('<li id="no-items-found">  没有此人...</li>');
+							      
+							      userList.on('updated', function(list) {
+							        if (list.matchingItems.length === 0) {
+							          $(list.list).append(noItems);
+							        } else {
+							          noItems.detach();
+							        }
+							      });
+							    }
+							  };
+							  
+							  searchFilter.init();
+					},50);
+					//从联系客户过来
+					setTimeout(function(){
+						var uid=location.hash.substring(1);
+						vue.selected(uid);
+					},50);
+				}
+			});
+		},methods:{
+			
+			send(){
+				if(this.chat.what.trim()==''){
+					return;
+				}
+				this.chat.time=new Date().toLocaleTimeString().
+	              replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+				this.chat.who=1;
+				var temp=this.content;
+				temp.push(this.chat);
+				setTimeout(function() {
+					$(".chat-history").scrollTop(document.getElementById("hhh").scrollHeight);
+			    }, 50);
+				var params = new URLSearchParams();
+				params.append("content",JSON.stringify(temp));
+				params.append("uid",this.uid);
+				axios({
+					url:"ChatServlet.do?op=minsert",
+					params
+				}).then((res)=>{
+					if(res.data=='请先登录'){
+						alert(res.data);
+					}else{
+						this.chat.what='';
+						this.selected(this.uid);
+					}
+					
+				});
+			},
+			selected(uid){
+				$('.u'+uid).siblings().css("background-color","#434651");
+				$('.u'+uid).css("background-color","#6A6C75");
+				if(!uid){
+					//alert("终端");
+					this.getxx2();
+					return;
+				}
+				this.uid=uid;
+				axios({
+					url:"ChatServlet.do",
+					params:{
+						op:"mquery",
+						uid:uid
+					}
+				}).then((res)=>{
+					if(res.data=='请先登录'){
+						alert(res.data);
+					}else{
+						//console.info(res.data.list);
+						this.content=JSON.parse(res.data.list.content);
+						/* var mxx=res.data.list.mxx;
+						if(mxx){
+							play();
+						} */
+						axios({
+							url:"ChatServlet.do",
+							params:{
+								op:"reset",
+								uid:uid
+							}
+						}).then((res)=>{
+							document.getElementById(uid).innerText='';
+						})
+						this.theone.count=this.content.length;
+						for (let p of this.people) {
+							if(p.uid==uid){
+								this.theone.uname=p.uname;
+								this.theone.head=p.head;
+								this.theone.uid=p.uid;
+							}
+						}
+					}
+					this.getxx2();
+					
+				});
+			},
+			getxx(){
+				
+				for (let p of this.people) {
+					axios({
+						url:"ChatServlet.do",
+						params:{
+							op:"mquery",
+							uid:p.uid
+						}
+					}).then((res)=>{
+						if(res.data=='请先登录'){
+							alert(res.data);
+						}else{
+							var mxx=res.data.list.mxx;
+							p.nationality="mxx";
+							
+							if(p.mxx<mxx){
+								play();
+							}
+							p.mxx=mxx;
+							if(p.mxx){
+								document.getElementById(p.uid).innerText=mxx;
+							}
+							
+						}
+					});
+				}
+			},getxx2(){
+				
+				for (let p of this.people) {
+					axios({
+						url:"ChatServlet.do",
+						params:{
+							op:"mquery",
+							uid:p.uid
+						}
+					}).then((res)=>{
+						if(res.data=='请先登录'){
+							alert(res.data);
+						}else{
+							var mxx=res.data.list.mxx;
+							if(p.mxx<mxx){
+								play();
+								setTimeout(function() {
+									$(".chat-history").scrollTop(document.getElementById("hhh").scrollHeight);
+							    }, 50);
+							}
+							p.mxx=mxx;
+							if(p.mxx){
+								document.getElementById(p.uid).innerText=mxx;
+							}
+							
+						}
+					});
+				}
+			}
+			
+			
+		}
+		
+		
+		
+	});
+	
+	
+	
+	
+	</script>
+	
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src='js/handlebars.min.js'></script>
+
+
+
+	
+	
+	
+
+</body>
+</html>

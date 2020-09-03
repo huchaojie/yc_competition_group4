@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>forget</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/proList.css" />
+		<link rel="stylesheet" type="text/css" href="css/forget.css" />
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		
+		<script type="text/javascript">
+		function aaa(){
+			/* $(".next").click(function(){
+				alert(vue.$data.i);
+				if(vue.$data.i==0){
+					$(".two").show();
+					$(".one").hide();
+					$(".forCon ul li").eq(1).addClass("on").siblings("li").removeClass("on");
+				}else{
+					alert("请输入邮箱");
+					return;
+				}
+			}); */
+		}
+		</script>
+	</head>
+	<body >
+	
+		<!----------------------------------------order------------------>
+		<div class="order cart">
+			<!-----------------logo------------------->
+			<div class="logo">
+				<h1 class="wrapper clearfix">
+					<a href="index.html"><img class="fl" src="img/temp/logo.png"></a>
+				</h1>
+			</div>
+			<div class="forCon">
+				<p>安全设置-找回密码</p>
+				<ul>
+					<li class="on"><span>01/</span>输入登录名</li>
+					<li><span>02/</span>验证信息</li>
+					<li><span>03/</span>重置密码</li>
+				</ul>
+				<div class="formCon">
+					<!--步骤1-->
+					<form action="#" method="post" class="one">
+						<input type="text" value="" placeholder="昵称/邮箱" v-model="email" ><label>请输入昵称/邮箱</label><br />
+						<input type="button" value="下一步" class="next" @click="checkemail()" >
+					</form>
+					<!--步骤2-->
+					<form action="#" method="post" class="two">
+						<p>电子邮箱：<span>{{this.email}}</span></p>
+						<p class="tip">验证邮件已发往你的电子邮箱，请查看邮箱验证码</p>
+						<input type="text" placeholder="请输入验证码" class="" v-model="vcode" >
+						<input type="button" value="验证" class="next" @click="checkvco" >
+					</form>
+					<!--步骤3-->
+					<form action="#" method="post" class="three">
+						<label>新密码：</label><input type="text" value="" v-model="pass"><br />
+						<label>确认密码：</label><input type="text" value="" v-model="npass"><br />
+						<input type="button" value="完成" @click="changepwd()">
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+		var vue = new Vue({
+			el : ".forCon",
+			data : {
+				email : "",
+				vcode : "",
+				pass  : "",
+				npass : "",
+			},
+			methods : {
+				checkemail(){
+					axios({
+						url : "LoginfileServlet?op=Fcheckemail",
+						params : {email : this.email},
+					}).then((res) => {
+						alert(res.data);
+						if(res.data=="验证码已发送"){
+							$(".two").show();
+							$(".one").hide();
+							$(".forCon ul li").eq(1).addClass("on").siblings("li").removeClass("on");
+							
+						}
+					});
+				},
+				checkvco(){
+					axios({
+						url : "LoginfileServlet?op=Fcheckvco",
+						params : {
+							vcode : this.vcode
+						},
+					}).then((res) => {
+						alert(res.data);
+						if(res.data=="验证成功"){
+							$(".three").show();
+							$(".two").hide();
+							$(".forCon ul li").eq(1).addClass("on").siblings("li").removeClass("on");
+						}
+					});
+				},
+				changepwd(){
+					axios({
+						url : "LoginfileServlet?op=Fchangepwd",
+						params : {
+							email : this.email,
+							pass : this.pass,
+							npass : this.npass,
+						},
+					}).then((res) => {
+						alert(res.data);
+						if(res.data=="密码修改成功"){
+							location.href = "login.html";
+						}
+					});
+				}
+				
+			}
+		});
+		
+		
+		
+		
+		
+		
+		</script>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

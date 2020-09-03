@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+		<script type="text/javascript"src="js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+	</head>
+	<body>
+		<!-------------------login-------------------------->
+		<div class="login">
+			<form action="#" method="post">
+				<h1><a href="index.html"><img src="img/temp/logo.png"></a></h1>
+				<p></p>
+				<div class="msg-warn hide"><b></b>公共场所不建议自动登录，以防账号丢失</div>
+				<p><input type="text" name="email" value="" placeholder="请输入邮箱账号" v-model="email"></p>
+				<p><input type="password" name="pass" value="" placeholder="请输入密码" v-model="pass"></p>
+				<p><input type="text" style="width: 197px" v-model="vcode" placeholder="注意区分大小写"/><img style="height: 30px;" src="vcodeServlet" alt="" 
+							onclick="this.src='vcodeServlet?a=' + new Date()"/></p>
+				<p class="reb"><input type="checkbox" name="remb" value="记住" v-model="remb" >记住账号</p>
+				<p><input type="button" name="login" value="登  录" @click="login" ></p>
+				
+				<p class="txt"><a class="" href="reg.html">免费注册</a><a href="forget.html">忘记密码？</a></p>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+		var vue = new Vue({
+			el : ".login",
+			data : {
+				email : "",
+				pass : "",
+				vcode : "",
+				remb : "",
+			},
+			created:function(){
+				var url = "LoginfileServlet?op=GetCookie";
+				$.post(url,null,function(data){
+					if(data != "null"){
+						vue.$data.email = JSON.parse(data);
+					}
+				});
+			},
+			methods : {
+				login(){
+					axios({
+						url : "LoginfileServlet?op=Login",
+						params : {
+							email : this.email,
+							pass : this.pass,
+							vcode : this.vcode,
+							remb : this.remb
+						}
+					}).then((res)=>{
+						alert(res.data);
+						if(res.data=="登录成功"){
+							location.href = "index.html";
+						}
+					});
+				}
+			}
+		});
+		
+		
+		
+		
+		</script>
+		
+	</body>
+</html>

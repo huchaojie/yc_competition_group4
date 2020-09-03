@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>cart</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/proList.css" />
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+		<script type="text/javascript">
+		var isCheckAll = false;  
+	    function swapCheck() {  
+	    	alert();
+	        if (isCheckAll) {  
+	            $("input[type='checkbox']").each(function() {  
+	                this.checked = false;  
+	            });  
+	            isCheckAll = false;  
+	        } else {  
+	            $("input[type='checkbox']").each(function() {  
+	                this.checked = true;  
+	            });  
+	            isCheckAll = true;  
+	        }  
+	    } 
+		</script>
+	</head>
+	<body>
+		<!--------------------------------------cart--------------------->
+		<div class="head ding">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<a href="login.html" id="login">登录</a>
+							<a href="reg.html" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input type="text" placeholder="搜索" />
+							<input type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="cart mt">
+			<!-----------------logo------------------->
+			<!--<div class="logo">
+				<h1 class="wrapper clearfix">
+					<a href="index.html"><img class="fl" src="img/temp/logo.png"></a>
+					<img class="top" src="img/temp/cartTop01.png">
+				</h1>
+			</div>-->
+			<!-----------------site------------------->
+			<div class="site">
+				<p class=" wrapper clearfix">
+					<span class="fl">购物车</span>
+					<img class="top" src="img/temp/cartTop01.png">
+					<a href="index.html" class="fr">继续购物&gt;</a>
+				</p>
+			</div>
+			<!-----------------table------------------->
+			<div class="table wrapper" >
+				<div class="tr">
+					<div>商品</div>
+					<div>单价</div>
+					<div>数量</div>
+					<div>小计</div>
+					<div>操作</div>
+				</div>
+				<div class="th" v-for="(p,index) in list">
+					<div class="pro clearfix">
+						<label class="fl">
+							<input type="checkbox" name="ids"   :value="p.pid" @click="push()" />
+    						<span @click="push()"></span>
+						</label>
+						<a class="fl" href="#">
+							<dl class="clearfix">
+								<dt class="fl"><a :href="'proDetail.html#'+p.sid"><img :src="p.image" style="width: 120px;height: 120px"></a></dt>
+								<dd class="fl">
+									<p>{{p.pname}}</p>
+									<p>颜色分类:</p>
+									<p>{{p.style}}</p>
+								</dd>
+							</dl>
+						</a>
+					</div>
+					<div class="price">￥{{p.price}}</div>
+					<div class="number">
+						<p class="num clearfix">
+							<img class="fl sub" src="img/temp/sub.jpg" @click="sub(index)">
+							<span class="fl">{{p.count}}</span>
+							<img class="fl add" src="img/temp/add.jpg" @click="add(index)">
+						</p>
+					</div>
+					<div class="price sAll">￥{{Math.floor(p.price*p.count * 100) / 100}}</div>
+					<div class="price"><a class="del" href="#2" @click="del(p.pid)">删除</a></div>
+				</div>
+				
+				
+				
+				<div class="goOn">空空如也~<a href="index.html">去逛逛</a></div>
+				<div class="pleaseC">
+					<p>请选择宝贝</p>
+					<img class="off" src="img/temp/off.jpg" />
+				</div>
+				<div class="tr clearfix">
+					<label class="fl">
+						<input class="checkAll" name="all"type="checkbox" @click="addall"/>
+						<span></span>
+					</label>
+					<p class="fl">
+						<a href="#"  >全选</a>
+						<a href="#" class="del"  @click="delnum()">删除</a>
+					</p>
+					<p class="fr">
+						<span>共<small id="sl">{{selcount}}</small>件商品</span>
+						<span>合计:&nbsp;<small id="all">￥{{selprice}}</small></span>
+						<a  class="count" @click="topay()" >结算</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mask"></div>
+		<div class="tipDel cart">
+			<p>确定要删除该商品吗？</p>
+			<p class="clearfix">
+				<a class="fl cer" href="#" @click="cerdel()">确定</a>
+				<a class="fr cancel" href="#">取消</a>
+			</p>
+		</div>
+		<script type="text/javascript">
+		
+		var vue = new Vue({
+			el:".cart",
+			data:{
+				list:[],
+				listp:[],
+				selcount:0,
+				selprice:0.00
+				
+			},
+			created:function(){
+				this.fresh();
+			},
+			methods:{
+				sub(index){//商品数量减
+					if(this.list[index].count>1){
+						this.list[index].count-=1
+						axios({
+							url:"CartServlet.do",
+							params:{
+								op:'changecount',
+								pid:this.list[index].pid,
+								count:this.list[index].count
+							}
+						}).then((res)=>{
+		
+						});
+						this.push();
+					}
+					
+				},
+				add(index){//商品数量加
+					if(this.list[index].count<5){
+						this.list[index].count++;
+						axios({
+							url:"CartServlet.do",
+							params:{
+								op:'changecount',
+								pid:this.list[index].pid,
+								count:this.list[index].count
+							}
+						}).then((res)=>{
+		
+						});
+						this.push();
+					}else{
+						alert("限购五件！");
+					}
+					
+				},
+				del(pid){//删除判断
+					
+					$(".mask").show();
+					$(".tipDel").show();
+					$('.cer').click(function(){
+						$(".mask").hide();
+						$(".tipDel").hide();
+						
+						vue.cerdel(pid);
+						vue.fresh();
+					})
+				},delnum(){//删除多个
+					if(this.listp==null||this.listp==""){
+						$(".mask").show();
+						$(".pleaseC").show();
+						return;
+					}
+					$(".mask").show();
+					$(".tipDel").show();
+					$('.cer').click(function(){
+						$(".mask").hide();
+						$(".tipDel").hide();
+						vue.$data.listp.forEach(myFunction);
+						function myFunction(value, index, array) {
+						  
+						  console.info(value);
+						  vue.cerdel(value);
+							vue.fresh();
+						}
+						 
+					})
+				},fresh(){//刷新
+					this.list="";
+					axios({
+						url:"CartServlet.do",
+						params:{
+							op:'getcart'
+							
+						}
+					}).then((res)=>{
+						if(res.data=="请先登录"){
+							alert(res.data);
+						}else{
+							this.list=res.data.list;
+							if(this.list==null||this.list==""){
+								$(".table .goOn").show();
+							}
+						}
+					});
+					if(this.list==null){
+						$(".table .goOn").show();
+					}
+				},
+				cerdel(pid){//确定删除
+					axios({
+						url:"CartServlet.do",
+						params:{
+							op:'deleteproduct',
+							pid:pid
+							
+						}
+					}).then((res)=>{
+	
+					});
+					this.push();
+					this.listp="";
+					this.selcount=0;
+					this.selprice=0;
+					
+				},
+				push(){//选中的商品pid添加到listp
+					
+					var ids=[];
+					
+					$("input[name='ids']:checked").each(function(i){
+						ids.push($(this).val())
+					})
+					this.listp=ids;
+					this.allcount();
+					if(this.listp==null||this.listp==''){
+						$(".count").css("background","#8e8e8e");
+					}else{
+						$(".count").css("background","#c10000");
+					}
+					
+				},
+				addall(){//全选  
+					
+					if($("input[name='all']").is(':checked')){
+						$("input[name='ids']").each(function(i){
+							this.checked = true;
+						})
+					}else{
+						$("input[name='ids']").each(function(i){
+							this.checked = false;
+						})
+					}
+					this.push();
+					
+				},
+				allcount(){
+					
+					var count=0;
+					var price=0;
+					vue.$data.listp.forEach(myFunction);
+					function myFunction(value, index, array) {
+						for(i=0;i<vue.$data.list.length;i++){
+							
+							 if(vue.$data.list[i].pid==value){
+								  count=count+vue.$data.list[i].count;
+								  price=Math.floor((price+(vue.$data.list[i].price*vue.$data.list[i].count)) * 100) / 100;
+							  }
+						}
+					}
+					this.selcount=count;
+					this.selprice=price;
+					
+				},topay(){
+					//console.info(this.listp);
+					if(this.listp==null||this.listp==""){
+						$(".mask").show();
+						$(".pleaseC").show();
+						return;
+					}
+					var params = new URLSearchParams();
+					params.append("pid",this.listp);
+					params.append("method","1"); 
+					
+					location.href='order.html?'+params;
+				}
+			}
+			
+		});
+		
+		</script>
+		<!--返回顶部-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		
+		<!----------------mask------------------->
+		<div class="mask"></div>
+		<!-------------------mask内容------------------->
+		<div class="proDets">
+			<img class="off" src="img/temp/off.jpg" />
+			<div class="proCon clearfix">
+				<div class="proImg fr">
+					<img class="list" src="img/temp/proDet.jpg"  />
+					<div class="smallImg clearfix">
+						<img src="img/temp/proDet01.jpg" data-src="img/temp/proDet01_big.jpg">
+						<img src="img/temp/proDet02.jpg" data-src="img/temp/proDet02_big.jpg">
+						<img src="img/temp/proDet03.jpg" data-src="img/temp/proDet03_big.jpg">
+						<img src="img/temp/proDet04.jpg" data-src="img/temp/proDet04_big.jpg">
+					</div>
+				</div>
+				<div class="fl">
+					<div class="proIntro change">
+						<p>颜色分类</p>
+						<div class="smallImg clearfix">
+							<p class="fl on"><img src="img/temp/prosmall01.jpg" alt="白瓷花瓶+20支快乐花" data-src="img/temp/proBig01.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall02.jpg" alt="白瓷花瓶+20支兔尾巴草" data-src="img/temp/proBig02.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall03.jpg" alt="20支快乐花" data-src="img/temp/proBig03.jpg"></p>
+							<p class="fl"><img src="img/temp/prosmall04.jpg" alt="20支兔尾巴草" data-src="img/temp/proBig04.jpg"></p>
+						</div>
+					</div>
+					<div class="changeBtn clearfix">
+						<a href="#2" class="fl"><p class="buy">确认</p></a>
+						<a href="#2" class="fr"><p class="cart">取消</p></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

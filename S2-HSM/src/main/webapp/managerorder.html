@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单管理</title>
+<link rel="stylesheet" type="text/css"
+	href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="easyui/datagrid-detailview.js"></script>
+<script type="text/javascript">
+function query() {
+	$('#dg').datagrid('load',{
+		uname:$("#uname").textbox('getValue'),
+		name:$("#name").textbox('getValue'),
+		oids:$("#oids").textbox('getValue'),
+		phone:$("#phone").textbox('getValue'),
+		time:$("#cc").textbox('getValue'),
+		statu:$("#dd").textbox('getValue')
+	});
+}
+function fmtfh(value,row,index) {
+	if(row.statu==1){
+		return "<button onclick='edit("+index+")'>去发货</button>"
+	}	
+}
+
+function fmtlx(value,row,index) {
+	
+	return "<button onclick='lianxi("+row.mid+")' href='mchat.html#"+row.uid+"' style='target='_Blank''>联系买家</button>"
+}
+function lianxi(mid) {
+	//alert(mid);
+	
+	$('#lx').form('submit',{
+		url : "OrdersServlet.do",
+		onSubmit:function(param){
+			param.op="lianxi";
+			param.mid=mid;
+		},
+		success : res=>{
+			res=JSON.parse(res);
+			if(res.code==0){
+				alert(res.msg);
+			}else{
+				location.href='mchat.html#'+mid;
+			}
+		}
+	});
+	
+}
+function edit(index) {
+	var rows = $('#dg').datagrid("getRows");
+	$('#bj').dialog('open');
+	$('#ff').form('load',rows[index]);
+}
+
+function fh() {
+	
+	$('#ff').form('submit',{
+		url : "LogisticsServlet.do",
+		onSubmit:function(param){
+			param.op="sendgood";
+		},
+		success : res=>{
+			alert(res);
+			$('#bj').dialog('close');
+			$('#dg').datagrid('reload');
+		}
+	});
+}
+
+
+</script>
+</head>
+<body >
+<div  class="easyui-layout" data-options="fit:true">
+		
+		
+			<table class="easyui-datagrid" id="dg"
+				data-options="
+				method:'get',
+				border:false,
+				singleSelect:true,
+				fit:true,
+				fitColumns:true,
+				pagination:true,toolbar:'#tb'"
+				>
+				
+				 
+			</table>
+		
+		<div id="tb" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px;height: 30px" id="total" >
+			<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+			Date From: <input class="easyui-datebox" style="width:80px">
+			To: <input class="easyui-datebox" style="width:80px"> -->
+			<form style="display: inline-block;" >
+				<label for="email">当前条件下总收入为:</label>
+				<input class="easyui-textbox" style="width:80px" id="ww" readonly="true">
+				<label for="email">元</label>
+				<label for="email">预计捐出金额为:</label>
+				<input class="easyui-textbox" style="width:80px" id="wj" readonly="true">
+				<label for="email">元</label>
+			</form>
+		</div>
+		
+		<div>
+			<select class="easyui-combobox" panelHeight="auto" style="width:150px" id="cc" >
+				<option value="">全部(日期分类)</option>
+				<option value="1">今日</option>
+				<option value="2">昨日</option>
+				<option value="3">本周</option>
+				<option value="4">上周</option>
+				<option value="5">近七天</option>
+				<option value="6">近30天</option>
+				<option value="7">本月</option>
+				<option value="8">上个月</option>
+				<option value="9">本季度</option>
+				<option value="10">上季度</option>
+				<option value="11">本年</option>
+				<option value="12">去年</option>
+			</select>
+			<input class="easyui-textbox" prompt="订单号" id="oids"> 
+			<input class="easyui-textbox" prompt="用户名" id="uname"> 
+			<input class="easyui-textbox" prompt="收件人名" id="name"> 
+			<input class="easyui-textbox" prompt="收件人电话号码" id="phone"> 
+			<select class="easyui-combobox" panelHeight="auto" style="width:160px" id="dd" >
+				<option value="">全部(订单状态分类)</option>
+				<option value="1">待发货</option>
+				<option value="2">已关闭</option>
+				<option value="3">已完成</option>
+				<option value="4">已发货</option>
+				<option value="0">待支付</option>
+			</select>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">Search</a>
+		</div>
+	</div>
+	<div id="bj" class="easyui-dialog" title="My Dialog" style="width:400px;height:400px;"
+    	data-options="iconCls:'icon-save',
+    	resizable:true,
+    	modal:true,
+    	closed:true,
+    	buttons:'#bb'
+    	">
+    	<form action="#" id="ff" style="margin-left: 20px;margin-top: 20px;">
+    		<input class="easyui-textbox" label="编号" name="oid" style="width: 280px"><br>
+    		<input class="easyui-textbox" label="订单号" name="oids" style="width: 280px"> <br>
+    		<input class="easyui-textbox" label="收件人姓名" name="name" style="width: 280px"> <br>
+    		<input class="easyui-textbox" label="收件人电话" name="phone" style="width: 280px"> <br>
+    		<input class="easyui-textbox" label="收件人地址" name="addr" style="width: 280px"> <br>
+    		<input class="easyui-textbox" label="物流公司"  name="company" style="width: 280px"> <br>
+    		<input class="easyui-textbox" label="物流单号" name="lids" style="width: 280px"> 
+		</form>
+		<form id="lx" style="display: none;"></form>
+	</div>
+	<div id="bb">
+		<a href="#" class="easyui-linkbutton" onclick="fh()">Save</a>
+		<a href="#" class="easyui-linkbutton">Close</a>
+	</div>
+	
+</div>
+<script type="text/javascript">
+
+		$('#dg').datagrid({
+		    width:500,
+		    height:250,
+		    remoteSort:false,
+		    singleSelect:true,
+		    nowrap:false,
+		    fitColumns:true,
+		    url:'OrdersServlet.do?op=querym',
+		    columns:[[
+		    	{field:'oid',title:'编号',width:50},
+		        {field:'oids',title:'订单号',width:100},
+		        {field:'uname',title:'用户名',width:50},
+		        {field:'total',title:'订单金额',width:60,align:'center',sortable:true},
+		        {field:'statu',title:'订单状态',width:60,align:'center',formatter:function(value, row, index){
+                    
+                        switch (value) {
+                            case 0:
+                                return '待支付';
+                                break;
+                            case 1:
+                                return '待发货';
+                                break;
+                            case 2:
+                                return '以关闭';
+                                break;
+                            case 3:
+                                return '订单已完成';
+                                break;
+                            case 4:
+                                return '已发货';
+                                break;
+                            default :
+                                return '已删除';
+                                break;
+                        }
+                    
+                }},
+		        {field:'name',title:'收件人名',width:80,align:'center'},
+		        {field:'phone',title:'收件人电话',width:80,align:'center'},
+		        {field:'addr',title:'收件人地址',width:150},
+		        {field:'createtime',title:'订单创建时间',width:70,align:'center'},
+		        {field:'mname',title:'联络人',width:50,align:'center'},
+		        {field:'asd',title:'操作',width:50,align:'center',formatter:fmtfh},
+		        
+		        {field:'axd',title:'操作',width:60,align:'center',formatter:fmtlx}
+		    ]],
+		    onLoadSuccess:function(data){
+		    	 
+		    	if($("#dd").textbox('getValue')=="3"||$("#dd").textbox('getValue')==""){
+		    		 $('#ww').textbox('setValue', data.alltotal);
+		    		 if(data.alltotal!=null){
+		    			 $('#wj').textbox('setValue', Math.floor(data.alltotal*0.1*100) / 100);
+		    		 }else{
+		    			 $('#wj').textbox('setValue', "0");
+		    		 }
+		    		 
+		    	}else{
+		    		$('#ww').textbox('setValue', "0");
+		    		$('#wj').textbox('setValue', "0");
+		    	}  
+		    	
+		    	
+		    },
+		    view: detailview,
+		    detailFormatter: function(rowIndex, rowData){
+		        return  '<div style="padding:2px"><table id="ddv-' + rowIndex + '"></table></div>';
+		    },
+		    onExpandRow:function(index,row){//注意3
+		        $('#ddv-'+index).datagrid({
+		            url:'OrdersServlet.do?op=queryoit&oid='+row.oid,
+		            fitColumns:true,
+		            singleSelect:true,
+		            height:'auto',
+		            columns:[[
+		                {field:'id',title:'编号'},
+		                {field:'pname',title:'商品名',width:50},
+		                {field:'count',title:'商品数量'},
+		                {field:'total',title:'金额'}
+		                
+		            ]],
+				    onResize:function(){
+		                $('#dg').datagrid('fixDetailRowHeight',index);
+		            },onLoadSuccess:function(){
+		            	$('#dg').datagrid('fixDetailRowHeight',index);
+                    }
+		        });
+		       
+		    }
+		});
+		
+
+
+</script>
+</body>
+</html>

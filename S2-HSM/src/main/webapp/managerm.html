@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>员工管理</title>
+<link rel="stylesheet" type="text/css"href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript"src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"src="js/axios.min.js"></script>
+<script type="text/javascript"src="js/vue.min.js"></script>
+<script type="text/javascript">
+	
+	function fmupdate(value,row,index){
+		return "<button  onclick='edit("+index+")'>修改</button>";
+	}
+	function fmdel(value,row,index){
+		return "<button onclick='delete1("+index+")'>删除</button>";
+	}
+	//打开修改窗口
+	function edit(index){
+		$("#add").dialog('open');
+		// index 有值 就是修改表格中的某一行记录, 否则是新增
+		// edit() 不传参数 index 为 undefined
+		if(index != undefined){
+			var rows=$('#dg').datagrid("getRows");
+			//rows[index].isnew= rows[index].isnew;
+			
+			$('#addf').form('load',rows[index]);
+		}else {
+			$('#addf').form('clear');
+		}
+	}
+	/* function add(index){
+		var rows=$('#dg').datagrid("getRows");
+		$("#dd1").dialog('open');
+		$('#ff1').form('load',rows[index]);
+	} */
+ 	function delete1(index){
+		$("#dele").dialog('open');
+		var rows=$('#dg').datagrid("getRows");
+	 	$('#delf').form('load',rows[index]);
+		
+	}
+	function yes(){
+		$('#delf').form('submit',{
+			url:"MpeopleServlet.do",
+			onSubmit: function(param){
+				//  扩展请求参数
+				param.op = "delete";
+			},
+			success:res=>{
+				alert(res);
+				//关闭窗口
+				$("#dele").dialog('close');
+				$('#dg').datagrid("reload");
+			
+		}
+		});
+	}
+	function no(){
+		$("#dele").dialog('close');
+	}
+	function query(){	
+		$('#dg').datagrid('load',{
+			name:$("#name").numberbox('getValue'),
+			image:$("#image").textbox('getValue')
+		});
+		
+	}
+	
+	function close1(){
+		$("#add").dialog('close');
+	}
+	function save(){
+		$('#addf').form('submit',{
+			url:"MpeopleServlet.do",
+			onSubmit: function(param){
+				//  扩展请求参数
+				param.op = "save";
+			},
+			success:res=>{
+				res=JSON.parse(res);
+				alert(res.msg);
+				if(res.code==1){
+					//关闭窗口
+					$("#add").dialog('close');
+					//刷新表格
+					$('#dg').datagrid("reload");
+				}
+				//否则什么都不做
+			}
+		});
+	} 
+	function statu(value, row, index){
+        
+        switch (value) {
+            case 0:
+                return '离开';
+                break;
+            case 1:
+                return '在线';
+                break;
+           
+            default :
+                return '已删除';
+                break;
+        }
+	}
+</script>
+</head>
+<body>
+	<div id="cc" class="easyui-layout"data-options="fit:true">
+        
+        	<script type="text/javascript">
+				 var vue1=new Vue({
+					 el:"#dg",
+					 data:{
+						 Manager:{}
+					 },
+					 created:function(){
+						var url="MpeopleServlet.do?op=querym";
+						$.post(url,null,function(msg){
+							if(msg==0){
+								alert("您未授权！");
+							}
+							vue1.$data.Manager=JSON.parse(msg);
+						});
+					}
+				 });
+			</script>
+        	<div id="tb" style="padding:5px;height:auto" class="datagrid-toolbar">
+				<div style="margin-bottom:5px;height: 30px" id="total" >
+					<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="edit()" plain="true"></a>
+					<input class="easyui-textbox" prompt="姓名" id="name"> 
+					<input class="easyui-textbox" prompt="电话" id="image"> 
+					<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">Search</a>
+				</div>
+			</div>
+        	<table id="dg"class="easyui-datagrid"data-options="
+        											url:'MpeopleServlet.do?op=querym',
+        											method:'get',
+        											border:false,
+        											singleSelect:true,
+        											fit:true,
+													fitColumns:true,
+													pagination:true,toolbar:'#tb'
+        												">
+        		<thead>
+	        		<tr>
+	        			<th data-options="field:'id',width:50,align:'center'">编号</th>
+	        			<th data-options="field:'name',width:150,align:'center'">姓名</th>
+						<th data-options="field:'password',width:100,align:'center'">密码</th>
+						<th data-options="field:'email',width:100,align:'center'">邮箱</th>
+						<th data-options="field:'statu',width:100,align:'center',formatter:statu">当前状态</th>
+						<th data-options="field:'image',width:100,align:'center'">联系电话</th>
+						<th data-options="field:'idd',width:50,formatter:fmupdate,align:'center'">修改</th>
+						<th data-options="field:'idd1',width:50,formatter:fmdel,align:'center'">删除</th>
+	        		</tr>
+        		</thead>
+        	</table>
+        	
+        </div>
+    <div id="add" class="easyui-dialog" title="人员管理" style="width:400px;height:360px;"
+        data-options="
+        iconCls:'icon-save',
+        resizable:true,
+        modal:true,
+        closed:true,
+        buttons:'#bb'"title="请进行操作">
+        <form id="addf" style="margin: 60px;">
+        <input class="easyui-numberbox"name="id"label="编号:"readonly="true" style="width: 260px"><br>
+        <input class="easyui-textbox"name="name"label="姓名:" style="width: 260px"><br>
+        <input class="easyui-textbox"name="password"label="密码:" style="width: 260px"><br>
+        <input class="easyui-textbox"name="email"label="邮箱:" style="width: 260px"><br>
+        <input class="easyui-numberbox"name="image"label="电话号码:" style="width: 260px"><br>
+       
+        </form>
+   	</div>
+   
+  	<!-- 确认删除 -->
+   	<div id="dele" class="easyui-dialog" title="删除界面" style="width:250px;height:200px;"
+        data-options="
+        iconCls:'icon-save',
+        resizable:true,
+        modal:true,
+        closed:true,
+        buttons:'#bbb'"title="请进行删除操作">
+        <form id="delf" style="margin: 20px">
+        <label style="font-size: 18px">你确定要删除吗?</label><br>
+        <input class="easyui-numberbox"name="id"readonly="true"label="编号"><br>
+        <input class="easyui-textbox"name="name"readonly="true"label="姓名"><br>
+        </form>
+   	</div>
+   	
+   	<div id="bbb">
+	<a href="#" class="easyui-linkbutton"onclick="yes()">确认</a>
+	<a href="#" class="easyui-linkbutton"onclick="no()">取消</a>
+   	</div>
+	<div id="bb">
+	<a href="#" class="easyui-linkbutton"onclick="save()">保存</a>
+	<a href="#" class="easyui-linkbutton"onclick="close1()">退出</a>
+	</div>
+	
+</body>
+</html>

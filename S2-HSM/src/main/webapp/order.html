@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>order</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/proList.css" />
+		<link rel="stylesheet" type="text/css" href="css/mygxin.css" />
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/axios.min.js"></script>
+		<script type="text/javascript" src="js/ajax2.js"></script>
+		<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript">
+		
+		
+		function loadSheng(){
+	    	post("AreaServlet.do","level=0",function(text){
+	    		var arr=text.split(",");
+				vue1.$data.shengItems=arr;
+	    	});
+	    }
+		function loadShi(shengIndex){
+	    	if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+	    	post("AreaServlet.do","level=1&shengIndex="+shengIndex,function(text){
+	    		var arr=text.split(",");
+	    		vue1.$data.shiItems=arr;
+	    	});
+	    }
+		function loadXian(shengIndex,shiIndex){
+			if(shengIndex==undefined){
+	    		shengIndex=0;
+	    	}
+			if(shiIndex==undefined){
+	    		shiIndex=0;
+	    	}
+
+	    	post("AreaServlet.do","level=2&shengIndex="+shengIndex+"&shiIndex="+shiIndex,function(text){
+	    		var arr=text.split(",");
+				vue1.$data.xianItems=arr;
+	    	});
+	    }
+		function timedMsg()
+		{
+			setTimeout("bb()",10);
+		}
+		function bb(){
+			$(".addre").click(function(){
+				$(this).addClass("on").siblings().removeClass("on");
+			})
+			$(".way img").click(function(){
+				$(this).addClass("on").siblings().removeClass("on");
+			})
+			$(".dis span").click(function(){
+				$(this).addClass("on").siblings().removeClass("on");
+			});
+			/* $(".addre").on('click','.setDefault',function(){
+				$(this).next().remove();
+				$(this).parent("p").prev().append('<span class="default">[默认地址]</span>').parents('.addre').addClass("on").siblings().removeClass("on")
+				.find(".default").remove().end().find(".tit p").eq(1).prepend('<a href="#" class="setDefault">设为默认</a><span>|</span>');
+				$(this).parent("p").prev().parents('.addre').prependTo(".addres");
+				$(this).remove();
+			})  */
+			
+			$(".edit").click(function(){
+				$(".mask").show();
+				$(".adddz").show();
+			});
+			
+			$(".bc>input").click(function(){
+				if($(this).val()=="保存"){
+					$(".mask").hide();
+					$(".adddz").hide();
+					$(".bj").hide();
+					$(".xg").hide();
+					$(".remima").hide();
+					$(".pj").hide();
+					$(".chak").hide();
+				}else{
+					$(".mask").hide();
+					$(".adddz").hide();
+					$(".bj").hide();
+					$(".xg").hide();
+					$(".remima").hide();
+					$(".pj").hide();
+					$(".chak").hide();
+				}
+			});
+		}
+		function edit() {
+			$(".mask").show();
+			$(".adddz").show();
+		}
+		
+		</script>
+	</head>
+	<body >
+	<div id="qqq">
+		<!----------------------------------------order------------------>
+		<div class="head ding">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<a href="#" id="login">登录</a>
+							<a href="#" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input type="text" placeholder="搜索" />
+							<input type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="order cart mt">
+			<!-----------------site------------------->
+			<div class="site">
+				<p class="wrapper clearfix">
+					<span class="fl">订单确认</span>
+					<img class="top" src="img/temp/cartTop02.png">
+				</p>
+			</div>
+			<!-----------------orderCon------------------->
+			<div class="orderCon wrapper clearfix">
+				<div class="orderL fl">
+					<!--------h3---------------->
+					<h3>收件信息<a href="address.html" class="fr">新增地址</a></h3>
+					<!--------addres---------------->
+					<div class="addres clearfix">
+						<div class="addre fl " v-for="(a,index) in listadd" 
+							:class="a.dft==1?['on']:''" 
+							@click="getaddr(index)" >
+							<div class="tit clearfix">
+								<p class="fl">{{a.name}}
+									<span v-if="a.dft==1" :class="a.dft==1?['default']:['setDefault']" >[默认地址]</span>
+									
+								</p>
+								<p class="fr">
+									<a href="#" v-if="a.dft==0" 
+									:class="a.dft==1?['default']:['setDefault']" @click="setdft(a.aid)">设为默认</a>
+									<span v-if="a.dft==0">|</span>
+									
+									<a href="#" class="edit" onclick="edit()" @click="change(a.aid)">编辑</a>
+								</p>
+							</div>
+							<div class="addCon">
+								<p>{{a.addr}}</p>
+								<p>{{a.phone}}</p>
+							</div>
+						</div>
+						
+					</div>
+					
+					<h3>支付方式</h3>
+					<!--------way---------------->
+					<div class="way clearfix">
+						<img class="on" src="img/temp/way01.jpg"> 
+						<img src="img/temp/way02.jpg"> 
+						<img src="img/temp/way03.jpg"> 
+						<img src="img/temp/way04.jpg"> 
+					</div>
+					<h3>选择快递</h3>
+					<!--------dis---------------->
+					<div class="dis clearfix">
+						<span class="on">顺风快递</span>
+						<span>百世汇通</span>
+						<span>圆通快递</span>
+						<span>中通快递</span>
+					</div>
+				</div>
+				<div class="orderR fr">
+					<div class="msg">
+						<h3>订单内容<a href="cart.html" class="fr">返回购物车</a></h3>
+						<!--------ul---------------->
+						<ul class="clearfix" v-for="p in list">
+							<li class="fl">
+								<img :src="p.image" style="width: 87px;height: 87px">
+							</li>
+							<li class="fl">
+								<p>{{p.pname}}</p>
+								<p>颜色分类：{{p.style}}</p>
+								<p>数量：{{p.count}}</p>
+							</li>
+							<li class="fr">￥{{Math.floor(p.price*p.count * 100) / 100}}</li>
+						</ul>
+						
+					</div>
+					<!--------tips---------------->
+					<div class="tips">
+						<p><span class="fl">商品金额：</span><span class="fr">￥{{allprice}}</span></p>
+						<p><span class="fl" style="color: red">预计捐出：</span><span class="fr" style="color: red">￥{{Math.floor(allprice*0.1 * 100) / 100}}</span></p>
+						<p><span class="fl">运费：</span><span class="fr">免运费</span></p>
+					</div>
+					<!--------tips count---------------->
+					<div class="count tips">
+						<p><span class="fl">合计：</span><span class="fr">￥{{allprice}}</span></p>
+					</div>
+					<!--<input type="button" name="" value="去支付"> -->
+					<a  class="pay" @click="creatorder()">去支付</a>
+				</div>
+				
+			</div>
+		</div>
+		<!--编辑弹框-->
+		<!--遮罩-->
+		<div class="mask"></div>
+		<div class="adddz editAddre">
+			<form action="#" method="get">
+				<input type="text" placeholder="姓名" class="on" v-model="addr.name"/>
+				<input type="text" placeholder="手机号" v-model="addr.phone"/>
+				<div class="city">
+					<select id="sheng" @change="changeSheng()" >
+						<option  v-for="(sheng,i) in shengItems" :selected="i==addr.sheng" >{{sheng}}</option>
+					</select>
+					<select id="shi" @change="changeShi()">
+						<option v-for="(shi,i) in shiItems" :selected="i==addr.shi">{{shi}}</option>
+					</select>
+					<select id="xian" @change="changexian()">
+						<option v-for="(xian,i) in xianItems" :selected="i==addr.xian">{{xian}}</option>
+					</select>
+				</div>
+				<textarea name="" rows="" cols="" placeholder="详细地址" v-model="addr.addr"></textarea>
+				
+				<div class="bc">
+					<input type="button" value="保存" @click="update()"/>
+					<input type="button" value="取消" />
+				</div>
+			</form>
+		</div>
+		<!--返回顶部-->
+		<div class="gotop">
+			<a href="cart.html">
+			<dl>
+				<dt><img src="img/gt1.png"/></dt>
+				<dd>去购<br />物车</dd>
+			</dl>
+			</a>
+			<a href="#" class="dh">
+			<dl>
+				<dt><img src="img/gt2.png"/></dt>
+				<dd>联系<br />客服</dd>
+			</dl>
+			</a>
+			<a href="mygxin.html">
+			<dl>
+				<dt><img src="img/gt3.png"/></dt>
+				<dd>个人<br />中心</dd>
+			</dl>
+			</a>
+			<a href="#" class="toptop" style="display: none;">
+			<dl>
+				<dt><img src="img/gt4.png"/></dt>
+				<dd>返回<br />顶部</dd>
+			</dl>
+			</a>
+			<p>400-800-8200</p>
+		</div>
+		<!--footer-->
+		<div class="footer">
+			<div class="top">
+				<div class="wrapper">
+					<div class="clearfix">
+						<a href="#2" class="fl"><img src="img/foot1.png"/></a>
+						<span class="fl">7天无理由退货</span>
+					</div>
+					<div class="clearfix">
+						<a href="#2" class="fl"><img src="img/foot2.png"/></a>
+						<span class="fl">15天免费换货</span>
+					</div>
+					<div class="clearfix">
+						<a href="#2" class="fl"><img src="img/foot3.png"/></a>
+						<span class="fl">满599包邮</span>
+					</div>
+					<div class="clearfix">
+						<a href="#2" class="fl"><img src="img/foot4.png"/></a>
+						<span class="fl">手机特色服务</span>
+					</div>
+				</div>
+			</div>
+			<p class="dibu">最家家居&copy;2013-2017公司版权所有 京ICP备080100-44备0000111000号<br />
+			违法和不良信息举报电话：188-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</p>
+		</div>
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/user.js" type="text/javascript" charset="utf-8"></script>
+	</div>
+	<script type="text/javascript">
+				var vue1 =new Vue({
+					el:"#qqq",
+					data:{
+						shengItems:[],
+						shiItems:[],
+						xianItems:[],
+						list:[],
+						listadd:[],
+						allprice:0,
+						pay:'',
+						aid:'',
+					  	addr:{},
+					  	sheng:0,
+					 	shi:0,
+					  	xian:0
+						
+					},created:function(){
+						loadSheng();
+						loadShi();
+						loadXian();
+						var url=window.location.search;
+						var searchParams = new URLSearchParams(url.substr(1));
+						var method=searchParams.get("method");
+						this.queryadd();
+						if("1"==method){
+							var pid=searchParams.get("pid").split(",");
+							var params = new URLSearchParams();
+							params.append("op","getproduct");
+							params.append("pid",pid);
+							axios({
+								url:"PayServlet.do",
+								params
+							}).then((res)=>{
+								this.list=res.data.list;
+								console.info(this.list);
+								var count=0;
+								for(i=0;i<this.list.length;i++){
+									count=Math.floor((count+(this.list[i].price*this.list[i].count)) * 100) / 100;
+								}
+								this.allprice=count;
+							});
+						}
+						if("2"==method){
+							var pid=searchParams.get("pid");
+							var count=searchParams.get("count");
+							axios({
+								url:"PayServlet.do",
+								params:{
+									op:'listproduct',
+									pid:pid,
+									count:count
+								}
+							}).then((res)=>{
+								this.list=res.data.list;
+								var count=0;
+								count=Math.floor((this.list[0].price*this.list[0].count) * 100) / 100;
+								this.allprice=count;
+							});
+						}
+						
+						/* for (let p of searchParams) {
+						  console.log(p); // [q, URLUtils.searchParams]、[topic, api]
+						} */
+					},methods:{
+						queryadd(){
+							axios({
+								url:"AddressServlet.do",
+								params:{
+									op:"queryadd",
+								}
+							}).then((res)=>{
+								this.listadd=res.data.list;
+								for(i=0;i<this.listadd.length;i++){
+									if(this.listadd[i].dft==1){
+										this.aid=this.listadd[i].aid;
+									}
+								}
+								//alert(this.aid);
+							});
+						},
+						changeSheng(){
+							  var sheng=document.getElementById("sheng");//==sheng
+							  this.sheng=sheng.selectedIndex;
+							  this.shi=0;
+							  loadShi(sheng.selectedIndex);//selectedIndex获取选中索引
+							  loadXian(sheng.selectedIndex,0);//
+					  	},
+				     	changeShi(){
+						 
+						  	var sheng=document.getElementById("sheng");
+						  	var shi=document.getElementById("shi");
+						  	this.shi=shi.selectedIndex;
+						  	this.xian=0;
+						  	loadXian(sheng.selectedIndex,shi.selectedIndex);
+					 	 },
+					  	changexian(){
+						  var xian=document.getElementById("xian");
+						  this.xian=xian.selectedIndex;
+					  	},
+						creatorder(){
+					  		
+					  		if(!this.aid){
+					  			alert("请输入地址信息");
+					  			//console.info(this.aid)
+					  			return;
+					  		}
+					  		
+							  var url=window.location.search;
+							  var searchParams = new URLSearchParams(url.substr(1));
+							  var pid=searchParams.get("pid");
+							  var method=searchParams.get("method");
+							  var count=searchParams.get("count");
+							  var params = new URLSearchParams();
+							  params.append("total",this.allprice);
+								params.append("pay",this.pay);
+								params.append("aid",this.aid);
+								params.append("pid",pid);
+							  if("1"==method){
+								  params.append("op","creatorder");
+								 
+									axios({
+										url:"PayServlet.do",
+										params
+									}).then((res)=>{
+										if(res.data.code==1){
+											window.history.replaceState(null, "","http://candoit.top/S2-HSM/myorderq.html");//回退定位
+											location.href="pay.html";
+										}else{
+											alert(res.data.msg);
+										}
+										
+									});
+							  }
+							if("2"==method){
+								 params.append("op","creatorder2");
+								 //window.history.replaceState(null, "","http://localhost/S2-HSM/myorderq.html");//回退定位
+								 params.append("count",count);
+									axios({
+										url:"PayServlet.do",
+										params
+									}).then((res)=>{
+										if(res.data.code==1){
+											window.history.replaceState(null, "","http://candoit.top/S2-HSM/myorderq.html");//回退定位
+											location.href="pay.html";
+										}else{
+											alert(res.data.msg);
+										}
+									});
+								
+							}
+							 
+							/* for(i=0;i<this.list.length;i++){
+								var params = new URLSearchParams();
+								params.append("op","creatorder");
+								params.append("pid",this.list[i].pid);
+								params.append("price",this.list[i].price);
+								params.append("count",this.list[i].count);
+								params.append("pay",this.pay);
+								params.append("aid",this.aid);
+								axios({
+									url:"PayServlet.do",
+									params
+								}).then((res)=>{
+									alert(i);
+								});
+							}
+							alert("执行添加结束"); */
+						},
+						getaddr(index){
+							this.aid=this.listadd[index].aid;
+							//console.info(this.aid);
+							$(".addre").eq(index).addClass("on").siblings().removeClass("on");
+						},
+						setdft(aid){
+							axios({
+								url:"AddressServlet.do",
+								params:{
+									op:"setdft",
+									aid:aid
+								}
+							}).then((res)=>{
+								this.queryadd();
+								alert(res.data);
+								
+							});
+						},
+						change(aid){
+							for (let a of this.listadd) {
+								if(a.aid==aid){
+									this.addr=a;
+									console.info(this.addr);
+								}
+							}
+							this.sheng=this.addr.sheng;
+							this.shi=this.addr.shi;
+							this.xian=this.addr.xian;
+							 this.addr.addr=this.addr.addr.substring(this.addr.addr.lastIndexOf('区')+1,this.addr.length);
+							 loadShi(this.addr.sheng);//selectedIndex获取选中索引
+							 loadXian(this.addr.sheng,this.addr.shi);//
+							$(".mask").show();
+							$(".readd").show();
+						 },
+						  update(){
+							  axios({
+								  	url:"AddressServlet.do",
+									params:{
+										op:'change',
+										aid:this.addr.aid,
+										name:this.addr.name,
+										phone:this.addr.phone,
+										addr:this.addr.addr,
+										sheng:this.sheng,
+										shi:this.shi,
+										xian:this.xian
+									}
+								}).then((res)=>{
+									alert(res.data);
+									this.queryadd();
+							}); 
+						  }
+					}
+				});
+				</script>
+	</body>
+</html>

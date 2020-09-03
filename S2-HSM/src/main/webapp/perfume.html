@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>蜡艺香薰</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/proList.css"/>
+		<script type="text/javascript"src="js/axios.min.js"></script>
+		<script type="text/javascript"src="js/vue.min.js"></script>
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript"
+		charset="utf-8"></script>
+		<script type="text/javascript" src="js/comp.js"></script>
+	</head>
+	<body>
+		<!------------------------------head------------------------------>
+		<div class="head">
+			<div class="wrapper clearfix">
+				<div class="clearfix" id="top">
+					<h1 class="fl"><a href="index.html"><img src="img/logo.png"/></a></h1>
+					<div class="fr clearfix" id="top1">
+						<p class="fl">
+							<span v-if="loginedUser != ''" style="font-size: 14px">欢迎{{loginedUser.uname}}</span>
+							<span v-else><a href="login.html" id="login">登录</a></span> <a
+								href="reg.html" id="reg">注册</a>
+						</p>
+						<form action="#" method="get" class="fl">
+							<input v-model="sname" type="text" placeholder="热门搜索：干花花瓶" />
+							<input @click="goto1()" type="button" />
+						</form>
+						<div class="btn fl clearfix">
+							<a href="mygxin.html"><img src="img/grzx.png"/></a>
+							<a href="#" class="er1"><img src="img/ewm.png"/></a>
+							<a href="cart.html"><img src="img/gwc.png"/></a>
+							<p><a href="#"><img src="img/smewm.png"/></a></p>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+				var vue3=new Vue({
+					el:"#top",
+					data:{
+						sname:"",
+						loginedUser : {}
+					},created:function(){
+						var url = "LoginfileServlet?op=GetLoginedUser";
+						$.post(url,null,function(data){
+							if(data != "null"){
+							vue3.$data.loginedUser = JSON.parse(data);
+							//console.info(vue1.$data.loginedUser);
+							}else{
+								vue3.$data.loginedUser = "";
+							}
+						});
+					},
+					methods:{
+						goto1(){
+							sname=this.sname;
+							location.href="search.html?"+sname;
+						}
+					}
+				});
+				</script>
+				<ul class="clearfix" id="bott">
+					<li><a href="index.html">首页</a></li>
+					<li>
+						<a href="#">所有商品</a>
+						<div class="sList">
+							<div class="wrapper  clearfix">
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav1.jpg"/></dt>
+										<dd>浓情欧式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav2.jpg"/></dt>
+										<dd>浪漫美式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav3.jpg"/></dt>
+										<dd>雅致中式</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav6.jpg"/></dt>
+										<dd>简约现代</dd>
+									</dl>
+								</a>
+								<a href="paint.html">
+									<dl>
+										<dt><img src="img/nav7.jpg"/></dt>
+										<dd>创意装饰</dd>
+									</dl>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="flowerDer.html">装饰摆件</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="proList.html">干花花艺</a>
+								<a href="vase_proList.html">花瓶花器</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="decoration.html">布艺软饰</a>
+						<div class="sList2">
+							<div class="clearfix">
+								<a href="zbproList.html">桌布罩件</a>
+								<a href="bzproList.html">抱枕靠垫</a>
+							</div>
+						</div>
+					</li>
+					<li><a href="paint.html">墙式壁挂</a></li>
+					<li><a href="perfume.html">蜡艺香薰</a></li>
+					<li><a href="idea.html">创意家居</a></li>
+					<li><a href="fight.html">抗疫专区</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-----------------banner------------------------------->
+		<div class="banner">
+			<a href="#"><img src="img/temp/perfume_Banner.jpg"/></a>
+		</div>	
+		<!-----------------address------------------------------->
+		<div class="address">
+			<div class="wrapper clearfix">
+				<a href="index.html">首页</a>
+				<span>/</span>
+				<a href="perfume.html" class="on">蜡艺香薰</a>
+			</div>
+		</div>
+		<!-----------------paintCon------------------------------->
+		<div class="paintCon">
+			<section class="wrapper">
+				<h3><img src="img/temp/perfumeTit01.jpg"></h3>
+				<img src="img/temp/xxB01.jpg" />
+				<div id="per">
+				<div class="paintList">
+					<a :href="'proDetail.html#'+v.sid" v-for="v in proList">
+					<dl>
+						<dt><img :src="v.image"></dt>
+						<dd>{{v.sname}}</dd>
+						<dd>￥{{v.price}}</dd>
+					</dl>
+				</a>
+				</div>
+		<div align="center">
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-2)">首页</button>
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-1)">上页</button>
+			第<input type="number" class="yongyin" style="width: 50px; text-align: center" min="1"
+				max="3" v-model="page" >页
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(1)">下页</button>
+			<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(2)">尾页</button> 
+		</div>
+			</div>	
+		<script type="text/javascript">
+			var vue1 = new Vue({
+				el:"#per",
+				data:{
+					proList:[],
+					page:1,
+					pages:0
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"12",
+							b:"0",
+							page:this.page,
+							size:"9"
+						}
+					}).then((res)=>{
+						//console.info(res.data.list);
+						this.proList=res.data.list;
+						this.pages=res.data.pages;
+					});
+				},
+				methods:{
+					query(type){
+						switch(type){
+						case -2:
+							this.page=1;
+							break;
+						case -1:
+							this.page-=1;
+							break;
+						case 1:
+							this.page+=1;
+							break;
+						case 2:
+							this.page=this.pages;
+							break;
+						}
+						if(this.page<1) this.page=1;
+						if(this.page>this.pages) this.page=this.pages;
+						axios({
+							url:"queryProductServlet.do",
+							params:{
+								op:"queryPage",
+								a:"12",
+								b:"0",
+								page:this.page,
+								size:"9"
+							}
+						}).then((res)=>{
+							this.proList=res.data.list;
+							this.pages=res.data.pages;
+						});
+					}
+				}
+			});
+		</script>
+			</section>
+			<section class="wrapper">
+				<h3><img src="img/temp/perfumeTit02.jpg"></h3>
+				<img src="img/temp/xxB02.jpg" />
+				<div id="bur">
+				<div class="paintList">
+					<a :href="'proDetail.html#'+v.sid" v-for="v in proList1">
+					<dl>
+						<dt><img :src="v.image"></dt>
+						<dd>{{v.sname}}</dd>
+						<dd>￥{{v.price}}</dd>
+					</dl>
+				</a>
+				</div>
+		<div align="center">
+				<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-2)">首页</button>
+				<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(-1)">上页</button>
+				第<input type="number" class="yongyin" style="width: 50px; text-align: center" min="1"
+					max="3" v-model="page" >页
+				<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(1)">下页</button>
+				<button type="button" class="yongyin" style="width:100px; height:30px;" @click="query(2)">尾页</button> 
+		</div>
+				
+				</div>
+		<script type="text/javascript">
+			var vue2 = new Vue({
+				el:"#bur",
+				data:{
+					proList1:[],
+					page:1,
+					pages:0
+				},
+				created:function(){
+					axios({
+						url:"queryProductServlet.do",
+						params:{
+							op:"queryPage",
+							a:"13",
+							b:"0",
+							page:this.page,
+							size:"9"
+						}
+					}).then((res)=>{
+						this.proList1=res.data.list;
+						this.pages=res.data.pages;
+					});
+				},
+				methods:{
+					query(type){
+						switch(type){
+						case -2:
+							this.page=1;
+							break;
+						case -1:
+							this.page-=1;
+							break;
+						case 1:
+							this.page+=1;
+							break;
+						case 2:
+							this.page=this.pages;
+							break;
+						}
+						if(this.page<1) this.page=1;
+						if(this.page>this.pages) this.page=this.pages;
+						axios({
+							url:"queryProductServlet.do",
+							params:{
+								op:"queryPage",
+								a:"13",
+								b:"0",
+								page:this.page,
+								size:"9"
+							}
+						}).then((res)=>{
+							this.proList=res.data.list;
+							this.pages=res.data.pages;
+						});
+					}
+				}
+			});
+		</script>
+			</section>
+		</div>
+		<!--返回顶部-->
+		
+		<div class="msk"></div>
+		<!--footer-->
+		<div id="oot">
+			<page-gotop></page-gotop>
+		</div>
+		<div id="ot">
+			<page-footer></page-footer>
+		</div>
+		<script type="text/javascript">
+			new Vue({el:"#oot"});
+			new Vue({el:"#ot"});
+		</script>
+		
+		<script src="js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/nav.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>-->
+	</body>
+</html>
